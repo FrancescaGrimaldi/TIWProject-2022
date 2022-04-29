@@ -12,8 +12,8 @@ import it.polimi.tiw.project.beans.User;
 public class RecordsDAO {
 	private Connection connection;
 	
-	public RecordsDAO(Connection c) {
-		this.connection = c;
+	public RecordsDAO(Connection conn) {
+		this.connection = conn;
 	}
 	
 	public List<User> findAllUsers() throws SQLException {
