@@ -65,12 +65,13 @@ public class User implements Serializable {
 		
 		buff.append(" id: ");
 		buff.append(userID);
+		buff.append(" email: ");
+		buff.append(email);
 		buff.append(" name: ");
 		buff.append(name);
 		buff.append(" surname: ");
 		buff.append(surname);
-		buff.append(" email: ");
-		buff.append(email);
+		
 		
 		return buff.toString();
 	}
