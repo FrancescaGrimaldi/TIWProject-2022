@@ -6,9 +6,10 @@ import java.io.Serializable;
  * This class represents the users of the platform.
  */
 public class User implements Serializable {
-	private static final long serialversionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	private int userID;
+	private String username;
 	private String name;
 	private String surname;
 	private String email;
@@ -24,6 +25,10 @@ public class User implements Serializable {
 	
 	public void setID(int id) {
 		this.userID = id;
+	}
+	
+	public void setUsername(String nick) {
+		this.username = nick;
 	}
 	
 	public void setName(String n) {
@@ -52,6 +57,10 @@ public class User implements Serializable {
 	
 	public int getID() {
 		return userID;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 	public String getName() {
@@ -96,4 +105,5 @@ public class User implements Serializable {
 		
 		return buff.toString();
 	}
+
 }
