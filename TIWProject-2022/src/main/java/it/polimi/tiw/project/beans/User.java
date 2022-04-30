@@ -13,6 +13,8 @@ public class User implements Serializable {
 	private String surname;
 	private String email;
 	private String password;
+	private int age;
+	private String city;
 	
 	/**
 	 * Class constructor.
@@ -40,6 +42,14 @@ public class User implements Serializable {
 		this.password = p;
 	}
 	
+	public void setAge(int a) {
+		this.age = a;
+	}
+	
+	public void setCity(String c) {
+		this.city = c;
+	}
+	
 	public int getID() {
 		return userID;
 	}
@@ -60,6 +70,14 @@ public class User implements Serializable {
 		return password;
 	}
 	
+	public int getAge() {
+		return age;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+	
 	public String toString() {
 		StringBuffer buff = new StringBuffer("User");
 		
@@ -71,7 +89,10 @@ public class User implements Serializable {
 		buff.append(name);
 		buff.append(" surname: ");
 		buff.append(surname);
-		
+		buff.append(" age: ");
+		buff.append(age);
+		buff.append(" lives in: ");
+		buff.append(city);
 		
 		return buff.toString();
 	}

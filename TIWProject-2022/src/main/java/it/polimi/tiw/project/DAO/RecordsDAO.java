@@ -27,6 +27,8 @@ public class RecordsDAO {
 					u.setName(result.getString("name"));
 					u.setSurname(result.getString("surname"));
 					u.setPassword(result.getString("password"));
+					u.setAge(result.getInt("age"));
+					u.setCity(result.getString("city"));
 					users.add(u);
 				}
 			}
@@ -35,5 +37,4 @@ public class RecordsDAO {
 	}
 				
 		
-	}
 }
