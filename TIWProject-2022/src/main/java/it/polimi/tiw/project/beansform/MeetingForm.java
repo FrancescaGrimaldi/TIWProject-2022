@@ -8,7 +8,8 @@ import java.sql.Time;
 
 /**
 * This class provides methods to check if the input inserted in 
-* the createMeeting form is correct and displays potential errors.
+* the createMeeting form is correct and sets the messages for
+* potential errors.
 */
 public class MeetingForm {
 	private String title;
@@ -22,10 +23,12 @@ public class MeetingForm {
 	private String durationError;
 	private String maxPartError;
 
+	
 	public MeetingForm() {
 		super();
 	}
 
+	
 	public MeetingForm(String title, String date, String time, int duration, int maxPart) {
 		super();
 		this.setTitle(title);
@@ -35,10 +38,12 @@ public class MeetingForm {
 		this.setMaxPart(maxPart);
 	}
 
+	
 	public String getTitle() {
 		return title;
 	}
 
+	
 	public void setTitle(String title) {
 		this.title = title;
 		if (title == null || title.isEmpty()) {
@@ -48,13 +53,15 @@ public class MeetingForm {
 		}
 	}
 
+	
 	public Date getDate() {
 		return date;
 	}
 
+	
 	/**
-	 * Sets date in a proper format for SQL queries and checks the validity of the
-	 * inserted parameter.
+	 * Sets date in a proper format for SQL queries and checks the validity of
+	 * the inserted parameter.
 	 * 
 	 * @param date the date inserted.
 	 */
@@ -92,10 +99,12 @@ public class MeetingForm {
 
 	}
 
+	
 	public Time getTime() {
 		return time;
 	}
 
+	
 	/**
 	 * Sets time in a proper format for SQL queries and checks the validity of the
 	 * inserted parameter.
@@ -134,10 +143,12 @@ public class MeetingForm {
 
 	}
 
+	
 	public int getDuration() {
 		return duration;
 	}
 
+	
 	public void setDuration(int duration) {
 		this.duration = duration;
 		if (duration == 0) {
@@ -147,10 +158,12 @@ public class MeetingForm {
 		}
 	}
 
+	
 	public int getMaxPart() {
 		return maxPart;
 	}
 
+	
 	public void setMaxPart(int maxPart) {
 		this.maxPart = maxPart;
 		if (maxPart == 0) {
@@ -162,26 +175,32 @@ public class MeetingForm {
 		}
 	}
 
+	
 	public String getTitleError() {
 		return titleError;
 	}
 
+	
 	public String getDateError() {
 		return dateError;
 	}
 
+	
 	public String getTimeError() {
 		return timeError;
 	}
 
+	
 	public String getDurationError() {
 		return durationError;
 	}
 
+	
 	public String getMaxPartError() {
 		return maxPartError;
 	}
 
+	
 	public boolean isValid() {
 		return (this.titleError == null && this.dateError == null && this.timeError == null
 				&& this.durationError == null && this.maxPartError == null);

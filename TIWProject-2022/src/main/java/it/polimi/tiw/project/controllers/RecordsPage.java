@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+//DON'T KNOW ITS USE YET
+
 @WebServlet("/recordspage")
 public class RecordsPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;

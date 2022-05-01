@@ -9,6 +9,8 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.xdevapi.Result;
+
 import it.polimi.tiw.project.beans.User;
 
 /**
@@ -48,44 +50,39 @@ public class UserDAO {
 	}
 	
 	//don't know if it's useful
-	public User getUserByNick(String username) throws SQLException {
-		List<User> users = new ArrayList<User>();
+	public int getIDByNick(String username) throws SQLException {
 		
-		String query = "SELECT * FROM tiwproject.user WHERE username = ?";
+		String query = "SELECT userID FROM tiwproject.user WHERE username = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
+			
 			try(ResultSet result = pstat.executeQuery();){
-				while (result.next()) {
-					User u = new User();
-					u.setID(result.getInt("userID"));
-					u.setEmail(result.getString("email"));
-					u.setUsername(result.getString("username"));
-					u.setName(result.getString("name"));
-					u.setSurname(result.getString("surname"));
-					u.setPassword(result.getString("password"));
-					u.setAge(result.getInt("age"));
-					u.setCity(result.getString("city"));
-					users.add(u);
+				if (!result.isBeforeFirst()) {		//to be 100% sure even though it should be impossible to have the wrong username
+					return -1;
 				}
+				
+				result.next();
+				return result.getInt("userID");
 			}
 		}
-		
-		return u;
+
 	}
 	
 	
 	//checks the presence of user's email and password in the database
-	public boolean checkCredentials(String username, String password) throws SQLException {
-		List<User> users = new ArrayList<User>();
+	public User checkCredentials(String username, String password) throws SQLException {
 		
-		String query = "SELECT * FROM tiwproject.user WHERE username = ? AND password = ?";
+		String query = "SELECT id,email,name,surname,age,city FROM tiwproject.user WHERE username = ? AND password = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
 			pstat.setString(2, password);
 			try(ResultSet result = pstat.executeQuery();){
-				while (result.next()) {
+				if (!result.isBeforeFirst()) { // no results, credential check failed
+					return null;
+				} else {
+					result.next();
 					User u = new User();
 					u.setID(result.getInt("userID"));
 					u.setEmail(result.getString("email"));
@@ -95,15 +92,10 @@ public class UserDAO {
 					u.setPassword(result.getString("password"));
 					u.setAge(result.getInt("age"));
 					u.setCity(result.getString("city"));
-					users.add(u);
+					
+					return u;
 				}
 			}
-		}
-		
-		if(users.size()==1) {
-			return true;
-		} else {
-			return false;
 		}
 		
 	}

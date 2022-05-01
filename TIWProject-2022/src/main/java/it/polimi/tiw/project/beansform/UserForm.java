@@ -22,10 +22,12 @@ public class UserForm {
 	private String ageError;
 	private String cityError;
 	
+	
 	public UserForm() {
 		super();
 	}
 
+	
 	public UserForm(String email, String username, String password, String password2, String name,
 			String surname, int age, String city) {
 		super();
@@ -38,32 +40,38 @@ public class UserForm {
 		this.setCity(city);
 	}
 	
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	
 	public void setEmail(String email) {
 		this.email = email;
 		if (email == null || email.isEmpty()) {
 			this.emailError = "You didn't enter an email!";
-		} else if (email.matches("[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*") {
+		} else if (email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$") {
 			this.emailError = null;
 		} else {
-			this.emailError = "Email format is example@mail.com"
+			this.emailError = "Email format is example@mail.com";
 		}
 	}
+	
 	
 	public String getUsername() {
 		return username;
 	}
 	
+	
 	public void setUsername(String username) {
 		//TODO:check (through UserDAO) if the selected username doesn't match one already in the database
 	}
 	
+	
 	public String getPassword() {
 		return password;
 	}
+	
 	
 	public void setPassword(String password, String password2) {
 		this.password = password;
@@ -82,9 +90,11 @@ public class UserForm {
 		
 	}
 
+	
 	public String getName() {
 		return name;
 	}
+	
 	
 	public void setName(String name) {
 		this.name = name;
@@ -97,9 +107,11 @@ public class UserForm {
 		
 	}
 	
+	
 	public String getSurname() {
 		return surname;
 	}
+	
 	
 	public void setSurname(String surname) {
 		this.surname = surname;
@@ -112,9 +124,11 @@ public class UserForm {
 		
 	}
 	
+	
 	public int getAge() {
 		return age;
 	}
+	
 	
 	public void setAge(int age) {
 		this.age = age;
@@ -127,9 +141,11 @@ public class UserForm {
 		
 	}
 	
+	
 	public String getCity() {
 		return city;
 	}
+	
 	
 	public void setCity(String city) {
 		this.city = city;
@@ -147,29 +163,36 @@ public class UserForm {
 		return emailError;
 	}
 	
+	
 	public String getUsernameError() {
 		return usernameError;
 	}
+	
 	
 	public String getPasswordError() {
 		return passwordError;
 	}
 	
+	
 	public String getNameError() {
 		return nameError;
 	}
+	
 	
 	public String getSurnameError() {
 		return surnameError;
 	}
 	
+	
 	public String getAgeError() {
 		return ageError;
 	}
 	
+	
 	public String getCityError() {
 		return cityError;
 	}
+	
 	
 	public boolean isValid() {
 		return this.emailError == null && this.usernameError == null && this.passwordError == null

@@ -20,8 +20,10 @@ import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.DAO.UserDAO;
 import it.polimi.tiw.project.DAO.MeetingDAO;
 
-//see the 'gestione progettazione' example to see how to manage the fact that
-//only authorized users can access this page
+//MAYBE USELESS
+
+//see the 'gestione progettazione' example to see how to manage the 
+//fact that only authorized users can access this page
 
 @WebServlet("/GetUserMeetings")
 public class GetUserMeetings extends HttpServlet {

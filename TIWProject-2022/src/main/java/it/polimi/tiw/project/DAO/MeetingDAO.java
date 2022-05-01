@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import it.polimi.tiw.project.beans.User;
  */
 public class MeetingDAO {
 	private Connection connection;
+	
 	
 	public MeetingDAO(Connection c) {
 		this.connection = c;
@@ -70,27 +72,40 @@ public class MeetingDAO {
 			}
 		}
 		
+		//TODO: remove the meetings happened in the past
+		//remembering to check date and time+duration
+		//remove not those STARTED in the past (that may still be ongoing) but those already EXPIRED
+		
 		return meetings;
 	}
 	
 	//Adds a new row to the meeting table
-	public int createMeeting(String title, Date date, Time time, int duration, int maxPart, int creator) throws SQLException {
-		int code = 0;
+	public int createMeeting(String title, Date date, Time time, int duration, int maxPart, String creator) throws SQLException {
+		int creatorID = -1;
 		
 		String query = "INSERT into tiwproject.meeting (title, date, time, duration, maxPart, creator) VALUES(?, ?, ?, ?, ?, ?)";
 		
-		try (PreparedStatement pstat = connection.prepareStatement(query);){
+		UserDAO uDAO = new UserDAO(connection);
+		creatorID = uDAO.getIDByNick(creator);
+		
+		int key = -1;
+		
+		try (PreparedStatement pstat = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);){
 			pstat.setString(1, title);
 			pstat.setDate(2, date);
 			pstat.setTime(3, time);
 			pstat.setInt(4, duration);
 			pstat.setInt(5, maxPart);
-			pstat.setInt(6,  creator);
+			pstat.setInt(6,  creatorID);
 			
-			code = pstat.executeUpdate();
+			pstat.executeUpdate();
+			
+			ResultSet keys = pstat.getGeneratedKeys();    
+			keys.next();  
+			key = keys.getInt(1);
 		}
-
-		return code;
+		
+		return key;
 	}
 	
 }
