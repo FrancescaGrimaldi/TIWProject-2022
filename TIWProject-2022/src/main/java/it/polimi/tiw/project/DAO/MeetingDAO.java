@@ -96,7 +96,7 @@ public class MeetingDAO {
 			pstat.setTime(3, time);
 			pstat.setInt(4, duration);
 			pstat.setInt(5, maxPart);
-			pstat.setInt(6,  creatorID);
+			pstat.setInt(6, creatorID);
 			
 			pstat.executeUpdate();
 			

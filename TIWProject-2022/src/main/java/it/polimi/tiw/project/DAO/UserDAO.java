@@ -70,7 +70,7 @@ public class UserDAO {
 	}
 	
 	
-	//checks the presence of user's email and password in the database
+	//checks the presence of user's username and password in the database
 	public User checkCredentials(String username, String password) throws SQLException {
 		
 		String query = "SELECT id,email,name,surname,age,city FROM tiwproject.user WHERE username = ? AND password = ?";
