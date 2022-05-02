@@ -87,6 +87,12 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
 			request.getSession().setAttribute("user", u);
+			//don't know if line 89 is enough to use dots in Homepage.html (line 15) and CreateMeeting.java (line 61)
+			//so i added lines 92-94
+			request.getSession().setAttribute("user.name", u.getName());
+			request.getSession().setAttribute("user.surname", u.getSurname());
+			request.getSession().setAttribute("user.username", u.getUsername());
+			
 			path = getServletContext().getContextPath() + "/Homepage";
 			response.sendRedirect(path);
 		}
