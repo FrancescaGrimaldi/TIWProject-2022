@@ -73,7 +73,7 @@ public class UserDAO {
 	//checks the presence of user's username and password in the database
 	public User checkCredentials(String username, String password) throws SQLException {
 		
-		String query = "SELECT id,email,name,surname,age,city FROM tiwproject.user WHERE username = ? AND password = ?";
+		String query = "SELECT userID,email,name,surname,age,city FROM tiwproject.user WHERE username = ? AND password = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
@@ -122,5 +122,29 @@ public class UserDAO {
 		return code;
 	}
 		
+
+	//Checks if a username is already used or not
+	public boolean checkExistence(String username) throws SQLException {
 		
+		String query = "SELECT userID FROM tiwproject.user WHERE username = ?";
+		
+		try (PreparedStatement pstat = connection.prepareStatement(query);){
+			pstat.setString(1, username);
+			try(ResultSet result = pstat.executeQuery();){
+				if (!result.isBeforeFirst()) { // no results, username not found -> can be used
+					return true;
+				} else {
+					result.next();
+					//maybe lines 139 and 140 are useless
+					User u = new User();
+					u.setID(result.getInt("userID"));
+					
+					return false;
+				}
+			}
+		}
+		
+	}
+	
+	
 }

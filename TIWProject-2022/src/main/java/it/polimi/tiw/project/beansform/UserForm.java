@@ -1,5 +1,7 @@
 package it.polimi.tiw.project.beansform;
 
+import it.polimi.tiw.project.DAO.UserDAO;
+
 /**
 * This class provides methods to check if the input inserted in 
 * the createUser form is correct and displays potential errors.
@@ -64,7 +66,16 @@ public class UserForm {
 	
 	
 	public void setUsername(String username) {
-		//TODO:check (through UserDAO) if the selected username doesn't match one already in the database
+		//this method only checks the validity of the format of the username, then its availability is
+		//checked by a CreateUser method (checkUsername) that calls UserDAO's method checkExistence
+		
+		this.username = username;
+		
+		if(username.matches("[a-zA-Z0-9]+")) {
+			this.usernameError = null;
+		} else {
+			this.usernameError = "Username field can only contain letters and numbers";
+		}
 	}
 	
 	
