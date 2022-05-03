@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Sign up</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/Homepage.html}">Go back</a>
+	</div>
+	
+	<h1>We're glad you want to join us!</h1>
+	<h2>Complete the following form to sign up:</h2>
+	
+	<form action="#" th:action="@{/CreateUser}" method="POST">
+		<fieldset>
+			<p>
+				Username: <input type="text" name="username" required maxlength="45" />
+			</p>
+			<p>
+				Email: <input type="email" name="email" required maxlength="45" />
+			<p>
+				Password: <input type="text" name="password" required maxlength="45" />
+			</p>
+			<p>
+				Confirm password: <input type="text" name="password2" required maxlength="45" />
+			</p>
+			<p>
+				Name: <input type="text" name="name" required maxlength="45" />
+			</p>
+			<p>
+				Surname: <input type="text" name="surname" required maxlength="45" />
+			</p>
+			<p>
+				Age: <input type="number" name="age" required min="5" max="123" />
+			</p>
+			<p>
+				City: <input type="text" name="city" required maxlength="45" />
+			</p>
+			<input type="submit" name="Sign up">
+		</fieldset>
+	</form>
+</body>
+</html>
