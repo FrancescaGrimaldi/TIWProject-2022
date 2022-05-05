@@ -13,7 +13,7 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
 	</context-param>
 	<context-param>
 		<param-name>dbPassword</param-name>
-		<param-value>passss</param-value>
+		<param-value>greem11</param-value>
 	</context-param>
 	<context-param>
 		<param-name>dbDriver</param-name>

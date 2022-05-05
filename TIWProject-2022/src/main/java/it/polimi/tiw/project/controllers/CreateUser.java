@@ -52,7 +52,7 @@ public class CreateUser extends HttpServlet {
 				try {
 					UserDAO uDAO = new UserDAO(connection);
 					uDAO.createUser(email, username, name, surname, password, age, city);
-					String path = "index.html";
+					String path = "/index.html";
 					response.sendRedirect(path);
 				} catch(SQLException e3) {
 					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with DB");
@@ -64,7 +64,7 @@ public class CreateUser extends HttpServlet {
 			
 		} else {
 			//we should display the format errors
-			String path = "/WEB-INF/SignUp.html";
+			String path = "/SignUp.html";
 			request.setAttribute("userForm", userF);
 			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 			dispatcher.forward(request, response);

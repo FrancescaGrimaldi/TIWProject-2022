@@ -73,7 +73,7 @@ public class UserDAO {
 	//checks the presence of user's username and password in the database
 	public User checkCredentials(String username, String password) throws SQLException {
 		
-		String query = "SELECT userID,email,name,surname,age,city FROM tiwproject.user WHERE username = ? AND password = ?";
+		String query = "SELECT userID, email, name, surname, age, city FROM tiwproject.user WHERE username = ? AND password = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
@@ -105,7 +105,7 @@ public class UserDAO {
 	public int createUser(String email, String username, String name, String surname, String password, int age, String city) throws SQLException {
 		int code = 0;
 		
-		String query = "INSERT into tiwproject.user (email, username, name, surname, password, age, city) VALUES(?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO tiwproject.user (email, username, name, surname, password, age, city) VALUES(?, ?, ?, ?, ?, ?, ?)";
 		
 		try (PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, email);

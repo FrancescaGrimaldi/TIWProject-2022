@@ -54,19 +54,19 @@ public class MeetingDAO {
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		
 		String query = "SELECT * FROM tiwproject.meeting M JOIN tiwproject.participation P"
-				+ "on M.meetingID = P.meetingID WHERE P.userID = ?";
+				+ "on M.meetingID = P.meetingID WHERE P.participantID = ?";
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setInt(1, u.getID());
 			try(ResultSet result = pstat.executeQuery();){
 				while (result.next()) {
 					Meeting m = new Meeting();
-					m.setID(result.getInt("meetingID"));
-					m.setTitle(result.getString("title"));
-					m.setDate(result.getDate("date"));
-					m.setTime(result.getTime("time"));
-					m.setDuration(result.getInt("duration"));
-					m.setMaxPart(result.getInt("maxPart"));
-					m.setCreator(result.getInt("creator"));
+					m.setID(result.getInt("M.meetingID"));
+					m.setTitle(result.getString("M.title"));
+					m.setDate(result.getDate("M.date"));
+					m.setTime(result.getTime("M.time"));
+					m.setDuration(result.getInt("M.duration"));
+					m.setMaxPart(result.getInt("M.maxPart"));
+					m.setCreator(result.getInt("M.creator"));
 					meetings.add(m);
 				}
 			}
