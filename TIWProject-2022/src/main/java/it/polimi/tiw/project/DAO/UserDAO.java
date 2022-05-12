@@ -28,7 +28,7 @@ public class UserDAO {
 	public List<User> findAllUsers() throws SQLException {
 		List<User> users = new ArrayList<User>();
 		
-		String query = "SELECT * FROM tiwproject.user";
+		String query = "SELECT * FROM user";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			try (ResultSet result = pstat.executeQuery();) {
@@ -52,7 +52,7 @@ public class UserDAO {
 	//don't know if it's useful
 	public int getIDByNick(String username) throws SQLException {
 		
-		String query = "SELECT userID FROM tiwproject.user WHERE username = ?";
+		String query = "SELECT userID FROM user WHERE username = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
@@ -73,7 +73,7 @@ public class UserDAO {
 	//checks the presence of user's username and password in the database
 	public User checkCredentials(String username, String password) throws SQLException {
 		
-		String query = "SELECT userID, email, name, surname, age, city FROM tiwproject.user WHERE username = ? AND password = ?";
+		String query = "SELECT userID, email, name, surname, age, city FROM user WHERE username = ? AND password = ?";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);
@@ -105,7 +105,7 @@ public class UserDAO {
 	public int createUser(String email, String username, String name, String surname, String password, int age, String city) throws SQLException {
 		int code = 0;
 		
-		String query = "INSERT INTO tiwproject.user (email, username, name, surname, password, age, city) VALUES(?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO user (email, username, name, surname, password, age, city) VALUES(?, ?, ?, ?, ?, ?, ?)";
 		
 		try (PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, email);
@@ -126,7 +126,7 @@ public class UserDAO {
 	//Checks if a username is already used or not
 	public boolean checkExistence(String username) throws SQLException {
 		
-		String query = "SELECT userID FROM tiwproject.user WHERE username = ?";
+		String query = "SELECT userID FROM user WHERE username = ?";
 		
 		try (PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setString(1, username);

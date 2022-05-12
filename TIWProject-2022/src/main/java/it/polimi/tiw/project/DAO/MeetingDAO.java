@@ -28,7 +28,7 @@ public class MeetingDAO {
 	public List<Meeting> findCreatedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		
-		String query = "SELECT * FROM tiwproject.meeting WHERE creator = ?";
+		String query = "SELECT * FROM meeting WHERE creator = ?";
 		try(PreparedStatement pstat = connection.prepareStatement(query);) {
 			pstat.setInt(1, u.getID());
 			try(ResultSet result = pstat.executeQuery();){
@@ -53,7 +53,7 @@ public class MeetingDAO {
 	public List<Meeting> findInvitedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<Meeting>();
 		
-		String query = "SELECT * FROM tiwproject.meeting M JOIN tiwproject.participation P"
+		String query = "SELECT * FROM meeting M JOIN participation P"
 				+ "on M.meetingID = P.meetingID WHERE P.participantID = ?";
 		try(PreparedStatement pstat = connection.prepareStatement(query);){
 			pstat.setInt(1, u.getID());
@@ -83,7 +83,7 @@ public class MeetingDAO {
 	public int createMeeting(String title, Date date, Time time, int duration, int maxPart, String creator) throws SQLException {
 		int creatorID = -1;
 		
-		String query = "INSERT into tiwproject.meeting (title, date, time, duration, maxPart, creator) VALUES(?, ?, ?, ?, ?, ?)";
+		String query = "INSERT into meeting (title, date, time, duration, maxPart, creator) VALUES(?, ?, ?, ?, ?, ?)";
 		
 		UserDAO uDAO = new UserDAO(connection);
 		creatorID = uDAO.getIDByNick(creator);
