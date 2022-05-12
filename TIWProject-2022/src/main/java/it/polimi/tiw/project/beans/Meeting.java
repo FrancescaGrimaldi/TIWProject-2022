@@ -15,9 +15,16 @@ public class Meeting {
 	private int maxPart;
 	private int creator;
 	
+	
+	/**
+	 * Class constructor.
+	 */
 	public Meeting() {
 	}
-
+	
+	
+	/* The following methods are setters for this class' attributes */
+	
 	public void setID(int id) {
 		this.meetingID = id;
 	}
@@ -45,6 +52,9 @@ public class Meeting {
 	public void setCreator(int id) {
 		this.creator = id;
 	}
+	
+	
+	/* The following methods are getters for this class' attributes */
 	
 	public int getID() {
 		return meetingID;

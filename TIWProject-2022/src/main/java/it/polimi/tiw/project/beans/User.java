@@ -1,12 +1,9 @@
 package it.polimi.tiw.project.beans;
 
-import java.io.Serializable;
-
 /**
  * This class represents the users of the platform.
  */
-public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class User {
 	
 	private int userID;
 	private String username;
@@ -17,11 +14,15 @@ public class User implements Serializable {
 	private int age;
 	private String city;
 	
+	
 	/**
 	 * Class constructor.
 	 */
 	public User(){
 	}
+	
+	
+	/* The following methods are setters for this class' attributes */
 	
 	public void setID(int id) {
 		this.userID = id;
@@ -54,6 +55,9 @@ public class User implements Serializable {
 	public void setCity(String c) {
 		this.city = c;
 	}
+	
+	
+	/* The following methods are getters for this class' attributes */
 	
 	public int getID() {
 		return userID;
