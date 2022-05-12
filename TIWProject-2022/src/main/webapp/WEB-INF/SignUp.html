@@ -3,12 +3,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Sign up</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
 </head>
 <body>
 	<div align="right">
-		<form method="get" action="index.html">
+		<form method="GET" action="index.html">
 			<button type="submit">Go back</button>
 		</form>
 	</div>
@@ -16,30 +14,30 @@
 	<h1>We're glad you want to join us!</h1>
 	<h2>Complete the following form to sign up:</h2>
 	
-	<form action="/TIWProject-2022/CreateUser" th:action="@{/CreateUser}" method="POST">
+	<form action="CreateUser" method="POST">
 		<fieldset>
 			<p>
-				Username: <input type="text" name="username" required maxlength="45" />
+				Username: <input type="text" name="username" required maxlength="100" />
 			</p>
 			<p>
-				Email: <input type="email" name="email" required maxlength="45" />
+				Email: <input type="email" name="email" required maxlength="100" />
 			<p>
-				Password: <input type="password" name="password" required maxlength="45" />
+				Password: <input type="password" name="password" required maxlength="100" />
 			</p>
 			<p>
-				Confirm password: <input type="password" name="password2" required maxlength="45" />
+				Confirm password: <input type="password" name="password2" required maxlength="100" />
 			</p>
 			<p>
-				Name: <input type="text" name="name" required maxlength="45" />
+				Name: <input type="text" name="name" required maxlength="100" />
 			</p>
 			<p>
-				Surname: <input type="text" name="surname" required maxlength="45" />
+				Surname: <input type="text" name="surname" required maxlength="100" />
 			</p>
 			<p>
 				Age: <input type="number" name="age" required min="5" max="123" />
 			</p>
 			<p>
-				City: <input type="text" name="city" required maxlength="45" />
+				City: <input type="text" name="city" required maxlength="100" />
 			</p>
 			<input type="submit" name="Sign up">
 		</fieldset>

@@ -35,12 +35,14 @@ public class CheckLogin extends HttpServlet {
 	//don't really understand the meaning of template stuff
 	public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
+		
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
+		
 	}
 
 	
@@ -71,7 +73,7 @@ public class CheckLogin extends HttpServlet {
 		try {
 			u = uDAO.checkCredentials(usrn, pwd);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to check credentials");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossible to check credentials");
 			return;
 		}
 
