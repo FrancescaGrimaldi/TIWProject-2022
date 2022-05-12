@@ -19,7 +19,7 @@ public class RecordsPage extends HttpServlet {
 			throws ServletException, IOException {
 		final String DB_URL = "jdbc:mysql://localhost:3306/tiwproject?serverTimezone=UTC";
 		final String USER = "root";
-		final String PASS = "passss";
+		final String PASS = "greem11";
 		String result = "Connection worked";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");

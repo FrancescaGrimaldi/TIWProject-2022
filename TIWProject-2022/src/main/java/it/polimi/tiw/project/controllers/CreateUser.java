@@ -9,8 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import it.polimi.tiw.project.beansform.UserForm;
 import it.polimi.tiw.project.DAO.*;
 import it.polimi.tiw.project.utils.ConnectionHandler;
@@ -18,7 +16,7 @@ import it.polimi.tiw.project.utils.ConnectionHandler;
 @WebServlet("/CreateUser")
 public class CreateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Connection connection = null;
+	private Connection connection;
 
 	
 	public CreateUser() {
@@ -52,7 +50,7 @@ public class CreateUser extends HttpServlet {
 				try {
 					UserDAO uDAO = new UserDAO(connection);
 					uDAO.createUser(email, username, name, surname, password, age, city);
-					String path = "/index.html";
+					String path = "index.html";
 					response.sendRedirect(path);
 				} catch(SQLException e3) {
 					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with DB");
@@ -64,7 +62,7 @@ public class CreateUser extends HttpServlet {
 			
 		} else {
 			//we should display the format errors
-			String path = "/SignUp.html";
+			String path = "SignUp.html";
 			request.setAttribute("userForm", userF);
 			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 			dispatcher.forward(request, response);
