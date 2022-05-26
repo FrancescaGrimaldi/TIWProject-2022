@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+
+<title>Online meetings</title>
+</head>
+<body>
+	<h1>ONLINE MEETINGS</h1>
+	<div>
+		<h2> Welcome to the Online Meetings app! </h2>
+			<div>
+				<p> You can set date and time and invite your friends or
+					colleagues, or join them accepting their invitations. </p>
+				<p> If you're already a member, log in below, otherwise, sign up
+					and then come back here!</p>
+				<form method="GET" action="SignUp.html">
+					<button type="submit">Sign up</button>
+				</form>
+			</div>
+	</div>
+
+	<h2>Login</h2>
+	<form action="CheckLogin" method="POST">
+		Username: <input type="text" name="username" required> <br>
+		Password: <input type="password" name="password" required><br> <input
+			type="submit" value="login">
+		<p th:text= "${errorMsg}"></p>
+	</form>
+</body>
+</html>
