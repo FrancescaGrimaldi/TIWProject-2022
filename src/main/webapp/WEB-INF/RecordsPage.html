@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Records Page</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+
+<body>
+	<h2>Please select the users you would like to invite to the meeting</h2>
+	
+	<div th:if="${RegisteredUsers.size()>0}">
+		<form method="post">
+		 <table>
+		 	<thead>
+			   <tr>
+			   		<th></th>
+			   		<th>Username</th>
+			   		<th>Email</th>
+			   		<th>Name</th>
+			   		<th>Surname</th>
+			    </tr>
+			</thead>
+			<tbody>
+				<tr th:each="u: ${RegisteredUsers}">
+					<td><input type="checkbox" name="${u.username}"/></td>
+					<td th:text="${u.username}"></td>
+					<td th:text="${u.email}"></td>
+					<td th:text="${u.name}"></td>
+					<td th:text="${u.surname}"></td>
+				</tr>
+			</tbody>	
+		 </table>
+		
+	
+		<input type="submit"/>
+		</form>
+	</div>
+</body>
