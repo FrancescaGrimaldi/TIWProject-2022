@@ -8,30 +8,44 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.beans.User;
+import it.polimi.tiw.project.utilities.DateChecker;
 
 /**
  * This class manages the access to the database containing created meetings.
  */
 public class MeetingDAO {
 	private Connection connection;
-	
-	
+
+
+	/**
+	 * Class constructor.
+	 * @param c				the Connection.
+	 */
 	public MeetingDAO(Connection c) {
 		this.connection = c;
 	}
-	
-	//Finds the meetings the given user has created
+
+
+	/**
+	 * Finds the meetings that the given user has created.
+	 * @param u				the given User.
+	 * @return				a List containing the created Meetings.
+	 * @throws SQLException	if there is an error while accessing the database.
+	 */
 	public List<Meeting> findCreatedMeetings(User u) throws SQLException {
-		List<Meeting> meetings = new ArrayList<Meeting>();
+		List<Meeting> meetings = new ArrayList<>();
 		
 		String query = "SELECT * FROM meeting WHERE creator = ?";
-		try(PreparedStatement pstat = connection.prepareStatement(query);) {
+		try(PreparedStatement pstat = connection.prepareStatement(query)) {
 			pstat.setInt(1, u.getID());
-			try(ResultSet result = pstat.executeQuery();){
+			try(ResultSet result = pstat.executeQuery()){
 				while (result.next()) {
 					Meeting m = new Meeting();
 					m.setID(result.getInt("meetingID"));
@@ -49,14 +63,21 @@ public class MeetingDAO {
 		return meetings;
 	}
 
-	//Finds the meetings the given user is invited to
+
+	/**
+	 * Finds the meetings the given user is invited to.
+	 * @param u				the given User.
+	 * @return				a List containing the Meetings they are invited to.
+	 * @throws SQLException if there is an error while accessing the database.
+	 */
 	public List<Meeting> findInvitedMeetings(User u) throws SQLException {
-		List<Meeting> meetings = new ArrayList<Meeting>();
+		List<Meeting> meetings = new ArrayList<>();
+		DateChecker dc = new DateChecker();
 		
 		String query = "SELECT * FROM meeting M JOIN participation P on M.meetingID = P.meetingID WHERE P.participantID = ?";
-		try(PreparedStatement pstat = connection.prepareStatement(query);){
+		try(PreparedStatement pstat = connection.prepareStatement(query)){
 			pstat.setInt(1, u.getID());
-			try(ResultSet result = pstat.executeQuery();){
+			try(ResultSet result = pstat.executeQuery()){
 				while (result.next()) {
 					Meeting m = new Meeting();
 					m.setID(result.getInt("M.meetingID"));
@@ -71,25 +92,41 @@ public class MeetingDAO {
 			}
 		}
 		
-		//TODO: remove the meetings happened in the past
-		//remembering to check date and time+duration
+		//removing the meetings happened in the past
+		//check date and time+duration
 		//remove not those STARTED in the past (that may still be ongoing) but those already EXPIRED
+		for(Meeting m : meetings) {
+			if(dc.isPastDate(m.getDate()) || (dc.isToday(m.getDate()) && dc.isPastTime(m.getTime())) ) {
+				meetings.remove(m);
+			}
+		}
 		
 		return meetings;
 	}
+
 	
-	//Adds a new row to the meeting table
+	/**
+	 * Adds a new row to the meeting table with the information in the parameters.
+	 * @param title			the title of the Meeting.
+	 * @param date			the date.
+	 * @param time			the time.
+	 * @param duration		the duration.
+	 * @param maxPart		the maximum number of participants.
+	 * @param creator		the username of the user who creates the meeting.
+	 * @return				the generated key.
+	 * @throws SQLException if there is an error while accessing the database.
+	 */
 	public int createMeeting(String title, Date date, Time time, int duration, int maxPart, String creator) throws SQLException {
-		int creatorID = -1;
+		int creatorID;
 		
 		String query = "INSERT into meeting (title, date, time, duration, maxPart, creator) VALUES(?, ?, ?, ?, ?, ?)";
 		
 		UserDAO uDAO = new UserDAO(connection);
 		creatorID = uDAO.getIDByNick(creator);
 		
-		int key = -1;
+		int key;
 		
-		try (PreparedStatement pstat = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);){
+		try (PreparedStatement pstat = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
 			pstat.setString(1, title);
 			pstat.setDate(2, date);
 			pstat.setTime(3, time);
@@ -106,13 +143,20 @@ public class MeetingDAO {
 		
 		return key;
 	}
-	
-	
+
+
+	/**
+	 * Adds a new row to the participation table that pairs a meeting and a user
+	 * through their IDs.
+	 * @param mID			Meeting's ID.
+	 * @param uID			User's ID.
+	 * @throws SQLException if there is an error while accessing the database.
+	 */
 	public void sendInvitation(int mID, int uID) throws SQLException {
 		
 		String query = "INSERT into participation (meetingID, participantID) VALUES(?, ?)";
 		
-		try (PreparedStatement pstat = connection.prepareStatement(query);){
+		try (PreparedStatement pstat = connection.prepareStatement(query)){
 			pstat.setInt(1, mID);
 			pstat.setInt(2, uID);
 			

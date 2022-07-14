@@ -1,4 +1,4 @@
-package it.polimi.tiw.project.beansform;
+package it.polimi.tiw.project.utilities;
 
 /**
 * This class provides methods to check if the input inserted in 
@@ -43,7 +43,6 @@ public class UserForm {
 	 */
 	public UserForm(String email, String username, String password, String password2, String name,
 			String surname, Integer age, String city) {
-		
 		setEmail(email);
 		setUsername(username);
 		setPassword(password,password2);
@@ -57,7 +56,6 @@ public class UserForm {
 	/**
 	 * Sets the email of the user checking that it's not empty and that
 	 * the format is valid (using a regex).
-	 * 
 	 * @param email		the email inserted.
 	 */
 	public void setEmail(String email) {
@@ -72,10 +70,10 @@ public class UserForm {
 		}
 	}
 	
+	
 	/**
 	 * Sets the username of the user checking that it's not empty and that
 	 * the format is valid (using a regex).
-	 * 
 	 * @param username	the username inserted.
 	 */
 	public void setUsername(String username) {
@@ -93,10 +91,10 @@ public class UserForm {
 		}
 	}
 	
+	
 	/**
 	 * Sets the password of the user checking that it's not empty and that
 	 * the two password fields match.
-	 * 
 	 * @param password	the password inserted.
 	 * @param password2	the password repeated by the user.
 	 */
@@ -112,11 +110,11 @@ public class UserForm {
 		}
 	}
 
+	
 	/**
 	 * Sets the name of the user checking that it's not empty and that
 	 * it only contains letters (using a regex).
-	 * 
-	 * @param name	the name inserted.
+	 * @param name		the name inserted.
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -130,10 +128,10 @@ public class UserForm {
 		}
 	}
 	
+	
 	/**
 	 * Sets the surname of the user checking that it's not empty and that
 	 * it only contains letters (using a regex).
-	 * 
 	 * @param surname	the surname inserted.
 	 */
 	public void setSurname(String surname) {
@@ -148,10 +146,10 @@ public class UserForm {
 		}
 	}
 	
+	
 	/**
 	 * Sets the age of the user checking that it's valid.
-	 * 
-	 * @param age	the age inserted.
+	 * @param age		the age inserted.
 	 */
 	public void setAge(Integer age) {
 		this.age = age;
@@ -163,11 +161,11 @@ public class UserForm {
 		}
 	}
 	
+	
 	/**
 	 * Sets the city of the user checking that it's not empty and that
 	 * it only contains letters (using a regex).
-	 * 
-	 * @param city	the city inserted.
+	 * @param city		the city inserted.
 	 */
 	public void setCity(String city) {
 		this.city = city;
@@ -249,13 +247,17 @@ public class UserForm {
 	 * If all the error strings == null -> there are no errors -> the form is
 	 * valid -> the user can proceed with the creation of the meeting, selecting
 	 * the participants.
-	 * 
-	 * @return	a boolean whose value is {@code true} if all the input is valid
-	 * 			and {@code false} otherwise.
+	 * @return			a boolean whose value is:
+	 * 					<p>
+	 * 					-{@code true} if all the input is valid;
+	 * 					</p> <p>
+	 * 					-{@code false} otherwise.
+	 * 					</p>
 	 */
 	public boolean isValid() {
 		return ( (emailError == null) && (usernameError == null) && (passwordError == null)
 				&& (nameError == null) && (surnameError == null) && (ageError == null)
 				&& (cityError == null) );
 	}
+
 }

@@ -20,7 +20,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.project.DAO.UserDAO;
-import it.polimi.tiw.project.beansform.UserForm;
+import it.polimi.tiw.project.utilities.UserForm;
 
 @WebServlet("/CreateUser")
 public class CreateUser extends HttpServlet {
@@ -125,7 +125,7 @@ public class CreateUser extends HttpServlet {
 		
 		try {
 			UserDAO uDAO = new UserDAO(connection);
-			result = uDAO.checkExistence(username);
+			result = uDAO.checkAvailability(username);
 		} catch(SQLException e3) {
 			e3.printStackTrace();
 		}

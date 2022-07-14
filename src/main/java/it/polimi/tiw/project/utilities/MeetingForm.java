@@ -1,4 +1,4 @@
-package it.polimi.tiw.project.beansform;
+package it.polimi.tiw.project.utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,13 +31,14 @@ public class MeetingForm {
 		super();
 	}
 
+
 	/**
 	 * Class constructor specifying the parameters got from user input.
 	 * @param title		the String containing the title of the meeting.
 	 * @param date		the Date of the meeting.
 	 * @param time		the Time of the meeting.
 	 * @param duration	the duration of the meeting (in minutes).
-	 * @param maxPart	the maximum number of partecipants (chosen by the meeting creator).
+	 * @param maxPart	the maximum number of participants (chosen by the meeting creator).
 	 */
 	public MeetingForm(String title, String date, String time, int duration, int maxPart) {
 		super();
@@ -52,8 +53,7 @@ public class MeetingForm {
 	/**
 	 * Sets the title of the meeting checking that it's a string (not empty)
 	 * only made up of letters.
-	 * 
-	 * @param title	the title inserted.
+	 * @param title		the title inserted.
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -65,88 +65,65 @@ public class MeetingForm {
 			this.titleError = null;
 		}
 	}
-	
+
+
 	/**
 	 * Sets date in a proper format for SQL queries and checks the validity of
 	 * the inserted parameter.
-	 * 
-	 * @param date the date inserted.
+	 * @param date 		the date inserted.
 	 */
 	public void setDate(String date) {
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		c.set(Calendar.MILLISECOND, 0);
-
+		DateChecker dc = new DateChecker();
+		
 		// checks if date format matches a regexp
 		if (date.matches("[0-9]{2}[/]{1}[0-9]{2}[/]{1}[0-9]{4}")) {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			sdf.setLenient(false);
-
-			// parses the String date in order to have a (sql.)Date object
-			Date d = null;
-			try {
-				d = (java.sql.Date) sdf.parse(date);
-				this.date = d;
-
+			
+			this.date = dc.fromStrToDate(date);
+			
 				// checks if date is in the past
-				if (d.before(c.getTime())) {
+				if (dc.isPastDate(this.date)) {
 					this.dateError = "Date cannot be in the past";
 				} else {
 					this.dateError = null;
 				}
 
-			} catch (ParseException exc) {
-				exc.printStackTrace();
-			}
 		} else {
 			this.dateError = "Please insert date in the format dd/MM/yyyy";
 		}
 
 	}
 
+
 	/**
 	 * Sets time in a proper format for SQL queries and checks the validity of the
 	 * inserted parameter.
-	 * 
-	 * @param time the time inserted.
+	 * @param time 		the time inserted.
 	 */
 	public void setTime(String time) {
-		Calendar c = Calendar.getInstance();
+		DateChecker dc = new DateChecker();
 
 		// checks if time format matches the regexp
 		if (time.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
 
-			SimpleDateFormat stf = new SimpleDateFormat("hh:mm");
-			stf.setLenient(false);
-
 			// parses the String time in order to have a Time object
-			Time t = null;
-			try {
-				t = (Time) stf.parse(time);
-				this.time = t;
+			this.time = dc.fromStrToTime(time);
 
 				// if date == today's date, checks if time is in the past
-				if (this.date.equals((Date) c.getTime()) && t.before((Time) c.getTime())) {
+				if (dc.isToday(this.date) && dc.isPastTime(this.time)) {
 					this.timeError = "Time cannot be in the past";
 				} else {
 					this.timeError = null;
 				}
 
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
 		} else {
 			this.timeError = "Please insert time in the format hh:mm";
 		}
 	}
-	
+
+
 	/**
 	 * Sets the duration of the meeting checking that the number inserted
 	 * is greater than zero.
-	 * 
 	 * @param duration	the duration inserted.
 	 */
 	public void setDuration(int duration) {
@@ -157,11 +134,11 @@ public class MeetingForm {
 			this.durationError = null;
 		}
 	}
-	
+
+
 	/**
 	 * Sets the maximum number of participants for the meeting checking that
 	 * the number inserted is >0 and <50.
-	 * 
 	 * @param maxPart	the number inserted.
 	 */
 	public void setMaxPart(int maxPart) {
@@ -227,9 +204,12 @@ public class MeetingForm {
 	 * If all the error strings == null -> there are no errors -> the form is
 	 * valid -> the user can proceed with the creation of the meeting, selecting
 	 * the participants.
-	 * 
-	 * @return	a boolean whose value is {@code true} if all the input is valid
-	 * 			and {@code false} otherwise.
+	 * @return			a boolean whose value is:
+	 * 					<p>
+	 * 					-{@code true} if all the input is valid;
+	 * 					</p> <p>
+	 * 					-{@code false} otherwise.
+	 * 					</p>
 	 */
 	public boolean isValid() {
 		return (this.titleError == null && this.dateError == null && this.timeError == null

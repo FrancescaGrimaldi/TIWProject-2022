@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.polimi.tiw.project.DAO.MeetingDAO;
-import it.polimi.tiw.project.beansform.MeetingForm;
+import it.polimi.tiw.project.utilities.MeetingForm;
 
 @WebServlet("/CreateMeeting")
 public class CreateMeeting extends HttpServlet {
@@ -71,6 +71,8 @@ public class CreateMeeting extends HttpServlet {
 		//the first half is done
 		if (meetF.isValid()) {
 			//redirect to the RecordsPage.html to select participants
+			
+			
 			//save the list of participantsID
 			
 			//******* THIS WILL BE DONE IN INVITEPEOPLE *******

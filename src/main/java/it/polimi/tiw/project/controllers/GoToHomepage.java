@@ -32,10 +32,12 @@ public class GoToHomepage extends HttpServlet {
 	private TemplateEngine templateEngine;
 	private Connection connection;
 
+	
 	public GoToHomepage() {
 		super();
 	}
 
+	
 	public void init() throws ServletException {
 		try {
 			ServletContext servletContext = getServletContext();
@@ -63,6 +65,7 @@ public class GoToHomepage extends HttpServlet {
 		}
 	}
 	
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
@@ -79,8 +82,8 @@ public class GoToHomepage extends HttpServlet {
 		MeetingDAO mDAO = new MeetingDAO(connection);
 		UserDAO uDAO = new UserDAO(connection);
 		
-		List<Meeting> cMeetings = new ArrayList<Meeting>();
-		List<Meeting> iMeetings = new ArrayList<Meeting>();
+		List<Meeting> cMeetings = new ArrayList<>();
+		List<Meeting> iMeetings = new ArrayList<>();
 		
 		
 		//there is a problem for which if there are no created or invited meetings, homepage doesn't display
