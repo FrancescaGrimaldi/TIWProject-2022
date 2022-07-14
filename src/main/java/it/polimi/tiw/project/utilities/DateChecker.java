@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
  */
 public class DateChecker {
 	private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm");
-	private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy");
+	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	
 	/**

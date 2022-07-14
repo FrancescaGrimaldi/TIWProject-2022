@@ -57,7 +57,8 @@ public class Meeting {
 	public void setCreatorUsername(String cUsername) {
 		this.creatorUsername = cUsername;
 	}
-	
+
+
 	/* The following methods are getters for this class' attributes */
 	
 	public int getID() {
