@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -15,18 +17,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+
 import it.polimi.tiw.project.DAO.MeetingDAO;
+import it.polimi.tiw.project.DAO.UserDAO;
+import it.polimi.tiw.project.beans.User;
 import it.polimi.tiw.project.utilities.MeetingForm;
 
-@WebServlet("/CreateMeeting")
-public class CreateMeeting extends HttpServlet {
+@WebServlet("/GoToRecordsPage")
+public class GoToRecordsPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private TemplateEngine templateEngine;
 	private Connection connection;
 
-	public CreateMeeting() {
+	public GoToRecordsPage() {
 		super();
 	}
 
+	
 	public void init() throws ServletException {
 		try {
 			ServletContext context = getServletContext();
@@ -44,10 +53,12 @@ public class CreateMeeting extends HttpServlet {
 		}
 	}
 	
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -71,30 +82,30 @@ public class CreateMeeting extends HttpServlet {
 		//the first half is done
 		if (meetF.isValid()) {
 			//redirect to the RecordsPage.html to select participants
+			session.setAttribute("attempt", 1);
+			session.setAttribute("meetF", meetF);
 			
+			UserDAO uDAO = new UserDAO(connection);
+			List<User> rUsers = new ArrayList<>();
+			List<User> sUsers = new ArrayList<>(); //this will be used to contain selected users in a single attempt
 			
-			//save the list of participantsID
-			
-			//******* THIS WILL BE DONE IN INVITEPEOPLE *******
 			try {
-				MeetingDAO mDAO = new MeetingDAO(connection);
-				int key = mDAO.createMeeting(meetF.getTitle(),meetF.getDate(),meetF.getTime(),meetF.getDuration(),meetF.getMaxPart(),(String)session.getAttribute("user.username"));
-				
-				//and then also update the Participation table
-				//something like
-				//mDAO.sendInvitation(list of participants, ''KEY'')
-				
-				//somehow refresh page
-				//maybe like this
-				String ctxpath = getServletContext().getContextPath();
-				String path = ctxpath + "/WEB-INF/Homepage.html";
-				response.sendRedirect(path);
-			} catch(SQLException e3) {
+				rUsers = uDAO.getRegisteredUsers();
+			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with DB");
 				return;
 			}
+			
+			String path = "/WEB-INF/RecordsPage.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("rUsers", rUsers);
+			ctx.setVariable("sUsers", sUsers);
+			// ctx.setVariable("attempt", 1);
+			templateEngine.process(path, ctx, response.getWriter());
+			
 		} else {
-			//we should display the errors
+			//we should redirect to homepage and display the errors
 			String path = "/Error.html";
 			request.setAttribute("meetingForm", meetF);
 			RequestDispatcher dispatcher = request.getRequestDispatcher(path);

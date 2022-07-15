@@ -193,12 +193,13 @@ public class UserDAO {
 	public List<User> getRegisteredUsers() throws SQLException {
 		List<User> users = new ArrayList<>();
 		
-		String query = "SELECT email, username, name, surname FROM user";
+		String query = "SELECT userID, email, username, name, surname FROM user";
 		
 		try(PreparedStatement pstat = connection.prepareStatement(query)){
 			try (ResultSet result = pstat.executeQuery()) {
 				while (result.next()) {
 					User u = new User();
+					u.setID(result.getInt("userID"));
 					u.setEmail(result.getString("email"));
 					u.setUsername(result.getString("username"));
 					u.setName(result.getString("name"));
@@ -208,6 +209,35 @@ public class UserDAO {
 			}
 		}
 		return users;
+	}
+	
+	
+	/**
+	 * Gets a user given their ID.
+	 * @param userID		user's ID.
+	 * @return				the corresponding User.
+	 * @throws SQLException	if there is an error while accessing the database.
+	 */
+	public User getRegisteredUserByID(int userID) throws SQLException {
+
+		String query = "SELECT email, username, name, surname FROM user WHERE userID = ?";
+		
+		try(PreparedStatement pstat = connection.prepareStatement(query)){
+			try (ResultSet result = pstat.executeQuery()) {
+				if (!result.isBeforeFirst()) { // the given id is not in the database
+					return null;
+				} else { 
+					result.next();
+					User user = new User();
+					user.setID(userID);
+					user.setEmail(result.getString("email"));
+					user.setUsername(result.getString("username"));
+					user.setName(result.getString("name"));
+					user.setSurname(result.getString("surname"));
+					return user;
+				}
+			}
+		}
 	}
 	
 }

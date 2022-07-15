@@ -1,9 +1,9 @@
 package it.polimi.tiw.project.utilities;
 
 import java.util.Date;
-import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 /**
  * This class contains useful methods to work with and convert date/time input.
@@ -75,13 +75,9 @@ public class DateChecker {
 	 * 					</p>
 	 */
 	public boolean isPastDate(java.sql.Date date) {
-		Calendar todayDate = Calendar.getInstance();
-		todayDate.set(Calendar.HOUR_OF_DAY, 0);
-		todayDate.set(Calendar.MINUTE, 0);
-		todayDate.set(Calendar.SECOND, 0);
-		todayDate.set(Calendar.MILLISECOND, 0);
+		java.sql.Date today = java.sql.Date.valueOf(LocalDate.now());
 		
-		if (date.before(todayDate.getTime())) {
+		if (date.before(today)) {
 			return true;
 		} else {
 			return false;
@@ -105,7 +101,7 @@ public class DateChecker {
 		timeFormatter.setLenient(false);
 		
 		try {
-			todayTime = timeFormatter.parse(Calendar.getInstance().getTime().toString());
+			todayTime = timeFormatter.parse(java.time.LocalTime.now().toString());
 			if(time.before(todayTime)) {
 				return true;
 			} else {
@@ -133,9 +129,9 @@ public class DateChecker {
 		Date todayDate;
 		
 		dateFormatter.setLenient(false);
-		
+	
 		try {
-			todayDate = dateFormatter.parse(Calendar.getInstance().getTime().toString());
+			todayDate = dateFormatter.parse(java.time.LocalDate.now().toString());
 			if(date.compareTo(todayDate) == 0) {
 				return true;
 			} else {

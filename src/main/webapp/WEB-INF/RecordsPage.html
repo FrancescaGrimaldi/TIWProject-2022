@@ -9,9 +9,10 @@
 
 <body>
 	<h2>Please select the users you would like to invite to the meeting</h2>
-	
-	<div th:if="${RegisteredUsers.size()>0}">
-		<form method="post">
+	<p
+		th:text=" 'This is your attempt number ' + ${attempt} "></p>
+	<div th:if="${rUsers.size()>0}">
+		<form th:action="@{/InvitePeople}" method="POST">
 		 <table>
 		 	<thead>
 			   <tr>
@@ -23,8 +24,8 @@
 			    </tr>
 			</thead>
 			<tbody>
-				<tr th:each="u: ${RegisteredUsers}">
-					<td><input type="checkbox" name="${u.username}"/></td>
+				<tr th:each="u: ${rUsers}">
+					<td><input type="checkbox" th:value="${u.userID}" name="id" th:checked="${sUsers!=null && sUsers.contains(u)}"/></td>
 					<td th:text="${u.username}"></td>
 					<td th:text="${u.email}"></td>
 					<td th:text="${u.name}"></td>
@@ -34,7 +35,7 @@
 		 </table>
 		
 	
-		<input type="submit"/>
+		<input type="submit" name="Invite people"/>
 		</form>
 	</div>
 </body>
