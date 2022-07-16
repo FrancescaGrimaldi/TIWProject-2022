@@ -76,9 +76,11 @@ public class MeetingForm {
 		DateChecker dc = new DateChecker();
 		
 		// checks if date format matches a regexp
-		if (date.matches("[0-9]{2}[/]{1}[0-9]{2}[/]{1}[0-9]{4}")) {
+		if (date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
+			System.out.println("\nDENTRO SET DATE\n");
 			this.date = dc.fromStrToDate(date);
+			System.out.println(this.date.toString());
 			
 				// checks if date is in the past
 				if (dc.isPastDate(this.date)) {

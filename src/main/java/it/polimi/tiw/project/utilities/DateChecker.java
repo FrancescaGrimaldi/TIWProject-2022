@@ -29,8 +29,6 @@ public class DateChecker {
 		Date javaDate = null;
 		java.sql.Date sqlDate;
 		
-		dateFormatter.setLenient(false);
-		
 		try {
 			javaDate = dateFormatter.parse(string);
 		} catch (ParseException pex) {
@@ -50,8 +48,6 @@ public class DateChecker {
 	public java.sql.Time fromStrToTime(String string) {
 		Date javaTime = null;
 		java.sql.Time sqlTime;
-		
-		timeFormatter.setLenient(false);
 		
 		try {
 			javaTime = timeFormatter.parse(string);
@@ -98,8 +94,6 @@ public class DateChecker {
 	public boolean isPastTime(java.sql.Time time) {
 		Date todayTime;
 		
-		timeFormatter.setLenient(false);
-		
 		try {
 			todayTime = timeFormatter.parse(java.time.LocalTime.now().toString());
 			if(time.before(todayTime)) {
@@ -127,8 +121,6 @@ public class DateChecker {
 	 */
 	public boolean isToday(java.sql.Date date) {
 		Date todayDate;
-		
-		dateFormatter.setLenient(false);
 	
 		try {
 			todayDate = dateFormatter.parse(java.time.LocalDate.now().toString());

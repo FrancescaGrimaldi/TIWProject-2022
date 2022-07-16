@@ -64,7 +64,8 @@ public class GoToRecordsPage extends HttpServlet {
 			throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user.username") == null) {
+		if (session.isNew() || session.getAttribute("user") == null) {
+			System.out.println("\nDENTRO L'IF\n");
 			String loginpath = getServletContext().getContextPath() + "/index.html";
 			response.sendRedirect(loginpath);
 			return;
@@ -102,6 +103,7 @@ public class GoToRecordsPage extends HttpServlet {
 			ctx.setVariable("rUsers", rUsers);
 			ctx.setVariable("sUsers", sUsers);
 			// ctx.setVariable("attempt", 1);
+			this.templateEngine = new TemplateEngine();
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else {
