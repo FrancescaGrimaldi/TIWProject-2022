@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.project.DAO.MeetingDAO;
 import it.polimi.tiw.project.DAO.UserDAO;
@@ -67,7 +69,7 @@ public class GoToRecordsPage extends HttpServlet {
 		if (session.isNew() || session.getAttribute("user") == null) {
 			System.out.println("\nDENTRO L'IF\n");
 			String loginpath = getServletContext().getContextPath() + "/index.html";
-			response.sendRedirect(loginpath);
+
 			return;
 		}
 
@@ -102,8 +104,15 @@ public class GoToRecordsPage extends HttpServlet {
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("rUsers", rUsers);
 			ctx.setVariable("sUsers", sUsers);
-			// ctx.setVariable("attempt", 1);
+			ctx.setVariable("attempt", 1);
+			ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);		//we are going to retrieve our template files as resources from the servlet context
+			
+			templateResolver.setTemplateMode(TemplateMode.HTML);		//set even though HTML is the default mode
+			templateResolver.setSuffix(".html");						//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+			
 			this.templateEngine = new TemplateEngine();
+			this.templateEngine.setTemplateResolver(templateResolver);
+			
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else {

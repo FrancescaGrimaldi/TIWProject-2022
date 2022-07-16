@@ -16,7 +16,7 @@
 		 <table>
 		 	<thead>
 			   <tr>
-			   		<th></th>
+			   		<th>Invited	</th>
 			   		<th>Username</th>
 			   		<th>Email</th>
 			   		<th>Name</th>
@@ -25,7 +25,8 @@
 			</thead>
 			<tbody>
 				<tr th:each="u: ${rUsers}">
-					<td><input type="checkbox" th:value="${u.userID}" name="id" th:checked="${sUsers!=null && sUsers.contains(u)}"/></td>
+					
+					<td><input type="checkbox" th:value="${u.username}" name="id" th:checked="${sUsers!=null && sUsers.contains(u)}"/></td>
 					<td th:text="${u.username}"></td>
 					<td th:text="${u.email}"></td>
 					<td th:text="${u.name}"></td>
