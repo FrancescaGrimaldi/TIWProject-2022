@@ -118,11 +118,12 @@ public class GoToRecordsPage extends HttpServlet {
 			
 		} else {
 			//we should redirect to homepage and display the errors
-			String path = "/Error.html";
-			request.setAttribute("meetingForm", meetF);
+			String path = "/GoToHomepage";
+			
+			request.setAttribute("errors", meetF.getErrors());
+			
 			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 			dispatcher.forward(request, response);
-			return;
 		}
 
 	}

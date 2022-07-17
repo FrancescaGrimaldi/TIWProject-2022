@@ -96,6 +96,8 @@ public class User {
 		
 		buff.append(" id: ");
 		buff.append(userID);
+		buff.append(" username: ");
+		buff.append(username);
 		buff.append(" email: ");
 		buff.append(email);
 		buff.append(" name: ");

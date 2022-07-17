@@ -1,8 +1,5 @@
 package it.polimi.tiw.project.utilities;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -58,9 +55,9 @@ public class MeetingForm {
 	public void setTitle(String title) {
 		this.title = title;
 		if (title == null || title.isEmpty()) {
-			this.titleError = "You didn't enter a title!";
-		} else if ( !title.matches("[a-zA-Z]+") ){
-			this.titleError = "Please insert only letters.";
+			this.titleError = "A title must be inserted.";
+		} else if ( !title.matches("(?=[^A-Za-z]*[a-zA-Z])[a-zA-Z\\s]") ){
+			this.titleError = "The title can only contain letters and spaces.";
 		} else {
 			this.titleError = null;
 		}
@@ -83,13 +80,13 @@ public class MeetingForm {
 			
 				// checks if date is in the past
 				if (dc.isPastDate(this.date)) {
-					this.dateError = "Date cannot be in the past";
+					this.dateError = "Date cannot be in the past.";
 				} else {
 					this.dateError = null;
 				}
 
 		} else {
-			this.dateError = "Please insert date in the format dd/MM/yyyy";
+			this.dateError = "Date must be in the format yyyy-MM-dd";
 		}
 
 	}
@@ -111,13 +108,13 @@ public class MeetingForm {
 
 				// if date == today's date, checks if time is in the past
 				if (dc.isToday(this.date) && dc.isPastTime(this.time)) {
-					this.timeError = "Time cannot be in the past";
+					this.timeError = "Time cannot be in the past.";
 				} else {
 					this.timeError = null;
 				}
 
 		} else {
-			this.timeError = "Please insert time in the format hh:mm";
+			this.timeError = "Time must be in the format hh:mm.";
 		}
 	}
 
@@ -130,7 +127,7 @@ public class MeetingForm {
 	public void setDuration(int duration) {
 		this.duration = duration;
 		if (duration == 0) {
-			this.durationError = "Duration can't be zero minutes!";
+			this.durationError = "Duration can't be zero minutes.";
 		} else {
 			this.durationError = null;
 		}
@@ -147,7 +144,7 @@ public class MeetingForm {
 		if (maxPart == 0) {
 			this.maxPartError = "Participants can't be zero!";
 		} else if (maxPart > 50) {
-			this.maxPartError = "You can't invite more than 50 people!";
+			this.maxPartError = "You can't invite more than 50 people.";
 		} else {
 			this.maxPartError = null;
 		}
@@ -176,27 +173,22 @@ public class MeetingForm {
 		return maxPart;
 	}
 
-	
-	/* The following methods are getters for the error strings */
-	
-	public String getTitleError() {
-		return titleError;
-	}
 
-	public String getDateError() {
-		return dateError;
-	}
-	
-	public String getTimeError() {
-		return timeError;
-	}
-	
-	public String getDurationError() {
-		return durationError;
-	}
-	
-	public String getMaxPartError() {
-		return maxPartError;
+	/**
+	 * This method is a getter for all the error strings.
+	 *
+	 * @return			a String containing the errors.
+	 */
+	public String getErrors(){
+		String error = " ";
+
+		if(titleError!=null) error=error.concat(titleError+" ");
+		if(dateError!=null) error=error.concat(timeError+" ");
+		if(timeError!=null) error=error.concat(titleError+" ");
+		if(durationError!=null) error=error.concat(timeError+" ");
+		if(maxPartError!=null) error=error.concat(titleError+" ");
+
+		return error;
 	}
 
 	

@@ -16,11 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import it.polimi.tiw.project.DAO.UserDAO;
 import it.polimi.tiw.project.beans.User;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
+	private TemplateEngine templateEngine;
 
 	public CheckLogin() {
 		super();
@@ -84,16 +89,18 @@ public class CheckLogin extends HttpServlet {
 
 		String path;
 		if (u == null) {
+			ServletContext servletContext = getServletContext();
 			
-			/* ServletContext servletContext = getServletContext();
+			ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
+			templateResolver.setTemplateMode(TemplateMode.HTML);
+			this.templateEngine = new TemplateEngine();
+			this.templateEngine.setTemplateResolver(templateResolver);
+			templateResolver.setSuffix(".html");
+
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", "Incorrect username or password");
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
-			*/
-			
-			path = getServletContext().getContextPath() + "/Wrong.html";
-			response.sendRedirect(path);
 		} else {
 			request.getSession().setAttribute("user", u);
 			request.getSession().setAttribute("user.username", u.getUsername());

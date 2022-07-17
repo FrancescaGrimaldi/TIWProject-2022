@@ -211,34 +211,4 @@ public class UserDAO {
 		return users;
 	}
 	
-	
-	/**
-	 * Gets a user given their username.
-	 * @param userID		the username.
-	 * @return				the corresponding User.
-	 * @throws SQLException	if there is an error while accessing the database.
-	 */
-	public User getRegisteredUserByNick(String username) throws SQLException {
-
-		String query = "SELECT userID, email, name, surname FROM user WHERE username = ?";
-		
-		try(PreparedStatement pstat = connection.prepareStatement(query)){
-			pstat.setString(1, username);
-			try (ResultSet result = pstat.executeQuery()) {
-				if (!result.isBeforeFirst()) { // the given id is not in the database
-					return null;
-				} else { 
-					result.next();
-					User user = new User();
-					user.setID(result.getInt("userID"));
-					user.setEmail(result.getString("email"));
-					user.setUsername(username);
-					user.setName(result.getString("name"));
-					user.setSurname(result.getString("surname"));
-					return user;
-				}
-			}
-		}
-	}
-	
 }

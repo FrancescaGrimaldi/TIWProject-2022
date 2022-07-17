@@ -62,9 +62,9 @@ public class UserForm {
 		this.email = email;
 		
 		if (email == null || email.equals("")) {
-			this.emailError = "You didn't enter an email!";
+			this.emailError = "Email field cannot be empty.";
 		} else if ( !(email.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")) ) {
-			this.emailError = "Email format is example@mail.com";
+			this.emailError = "Email format is example@mail.com.";
 		} else {
 			this.emailError = null;
 		}
@@ -83,9 +83,9 @@ public class UserForm {
 		this.username = username;
 		
 		if (username == null || username.equals("")) {
-			this.usernameError = "You didn't enter a username!";
+			this.usernameError = "Username field cannot be empty.";
 		} else if ( !(username.matches("[a-zA-Z0-9]+")) ) {
-			this.usernameError = "Username field can only contain letters and numbers";
+			this.usernameError = "Username can only contain letters and numbers.";
 		} else {
 			this.usernameError = null;
 		}
@@ -101,10 +101,10 @@ public class UserForm {
 	public void setPassword(String password, String password2) {
 		this.password = password;
 
-		if (password == null || password.equals("")) {
-			this.passwordError = "Password field is empty";
+		if (password == null || password.equals("") || password2 == null || password2.equals("")) {
+			this.passwordError = "Password field cannot be empty.";
 		} else if ( !(password.equals(password2)) ) {
-			this.passwordError = "Passwords don't match";
+			this.passwordError = "Passwords have to match.";
 		} else {
 			this.passwordError = null;
 		}
@@ -120,9 +120,9 @@ public class UserForm {
 		this.name = name;
 		
 		if(name == null || name.equals("")) {
-			this.nameError = "Name field is empty";
+			this.nameError = "Name field cannot be empty.";
 		} else if( !(name.matches("[a-zA-Z]+")) ) {
-			this.nameError = "Name field can only contain letters";
+			this.nameError = "Name field can only contain letters.";
 		} else {
 			this.nameError = null;
 		}
@@ -138,9 +138,9 @@ public class UserForm {
 		this.surname = surname;
 		
 		if(surname == null || surname.equals("")) {
-			this.surnameError = "Surname field is empty";
+			this.surnameError = "Surname field cannot be empty.";
 		} else if( !(surname.matches("[a-zA-Z]+")) ) {
-			this.surnameError = "Surname field can only contain letters";
+			this.surnameError = "Surname field can only contain letters.";
 		} else {
 			this.surnameError = null;
 		}
@@ -155,7 +155,7 @@ public class UserForm {
 		this.age = age;
 		
 		if(age < 5 || age > 123) {
-			this.ageError = "Age inserted is not valid";
+			this.ageError = "The age inserted must be valid.";
 		} else {
 			this.ageError = null;
 		}
@@ -171,9 +171,9 @@ public class UserForm {
 		this.city = city;
 		
 		if(city == null || city.equals("")) {
-			this.cityError = "City field is empty";
+			this.cityError = "City field cannot be empty.";
 		} else if ( !(city.matches("[a-zA-Z]+")) ) {
-			this.cityError = "City field can only contain letters";
+			this.cityError = "City field can only contain letters.";
 		} else {
 			this.cityError = null;
 		}
@@ -213,32 +213,18 @@ public class UserForm {
 	
 	/* The following methods are getters for the error strings */
 	
-	public String getEmailError() {
-		return emailError;
-	}
-	
-	public String getUsernameError() {
-		return usernameError;
-	}
-	
-	public String getPasswordError() {
-		return passwordError;
-	}
-	
-	public String getNameError() {
-		return nameError;
-	}
-	
-	public String getSurnameError() {
-		return surnameError;
-	}
-	
-	public String getAgeError() {
-		return ageError;
-	}
-	
-	public String getCityError() {
-		return cityError;
+	public String getErrors(){
+		String error = " ";
+
+		if(usernameError!=null) error=error.concat(usernameError+" ");
+		if(emailError!=null) error=error.concat(emailError+" ");
+		if(passwordError!=null) error=error.concat(passwordError+" ");
+		if(nameError!=null) error=error.concat(nameError+" ");
+		if(surnameError!=null) error=error.concat(surnameError+" ");
+		if(ageError!=null) error=error.concat(ageError+" ");
+		if(cityError!=null) error=error.concat(cityError+" ");
+
+		return error;
 	}
 	
 	

@@ -8,10 +8,7 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.beans.User;
@@ -92,9 +89,8 @@ public class MeetingDAO {
 			}
 		}
 		
-		//removing the meetings happened in the past
+		//removing the meetings started in the past
 		//check date and time+duration
-		//remove not those STARTED in the past (that may still be ongoing) but those already EXPIRED
 		for(Meeting m : meetings) {
 			if(dc.isPastDate(m.getDate()) || (dc.isToday(m.getDate()) && dc.isPastTime(m.getTime())) ) {
 				meetings.remove(m);
@@ -149,7 +145,7 @@ public class MeetingDAO {
 	 * Adds a new row to the participation table that pairs a meeting and a user
 	 * through their IDs.
 	 * @param mID			Meeting's ID.
-	 * @param uID			User's ID.
+	 * @param creator		creator's username.
 	 * @throws SQLException if there is an error while accessing the database.
 	 */
 	public void sendInvitation(int mID, String creator) throws SQLException {

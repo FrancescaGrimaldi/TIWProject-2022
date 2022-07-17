@@ -110,6 +110,12 @@ public class GoToHomepage extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("CreatedMeetings", cMeetings);
 		ctx.setVariable("InvitedMeetings", iMeetings);
+		
+		String errors = (String)request.getAttribute("errors");
+		if(errors!=null && !errors.equals(" ")) {
+			ctx.setVariable("errors", errors);
+		}
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

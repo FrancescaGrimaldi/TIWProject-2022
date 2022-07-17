@@ -28,10 +28,12 @@ public class CreateUser extends HttpServlet {
 	private Connection connection;
 	private TemplateEngine templateEngine;
 
+	
 	public CreateUser() {
 		super();
 	}
 
+	
 	public void init() throws ServletException {
 		try {
 			ServletContext context = getServletContext();
@@ -55,10 +57,12 @@ public class CreateUser extends HttpServlet {
 		}
 	}
 	
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
+	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -100,21 +104,21 @@ public class CreateUser extends HttpServlet {
 				return;
 				*/
 				
-				String path = "/WEB-INF/SignUp.html";
+				String path = "/SignUp.html";
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-				ctx.setVariable("userForm", userF);
 				ctx.setVariable("errorMsg", "The username you chose is already taken");
 				templateEngine.process(path, ctx, response.getWriter());
 			}
 			
 		} else {
 			//we should display the format errors
-			String path = "/Lol.html";
-			request.setAttribute("userForm", userF);
-			RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-			dispatcher.forward(request, response);
-			return;
+			String path = "/SignUp.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("errors", userF.getErrors());
+			System.out.println("\nERRORS: "+userF.getErrors());
+			templateEngine.process(path, ctx, response.getWriter());
 		}
 
 	}

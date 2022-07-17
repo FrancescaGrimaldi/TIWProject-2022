@@ -125,7 +125,7 @@ public class InvitePeople extends HttpServlet {
 				
 				UserDAO uDAO = new UserDAO(connection);
 				List<User> rUsers = new ArrayList<>();
-				List<User> sUsers = new ArrayList<>();
+				List<String> sUsers = new ArrayList<>();
 				
 				try {
 					rUsers = uDAO.getRegisteredUsers();
@@ -133,12 +133,8 @@ public class InvitePeople extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-				try {
-					for(String s : sUsernames) {
-						sUsers.add(uDAO.getRegisteredUserByNick(s));
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
+				for(String s : sUsernames) {
+					sUsers.add(s);
 				}
 				
 				int toDeselect = sUsernames.length-maxPart;

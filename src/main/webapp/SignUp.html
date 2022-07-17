@@ -41,8 +41,18 @@
 			<p>
 				City: <input type="text" name="city" required maxlength="100" />
 			</p>
+
 			<input type="submit" name="Sign up">
 		</fieldset>
 	</form>
+	
+	<div th:if="${errorMsg!=null}">
+		<p th:text="${errorMsg}"></p>
+	</div>
+
+	<div th:if="${errors!=null && !errors.equals(' ')}">
+		<p th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
+	</div>
+	
 </body>
 </html>
