@@ -96,14 +96,15 @@ public class CheckLogin extends HttpServlet {
 			response.sendRedirect(path);
 		} else {
 			request.getSession().setAttribute("user", u);
-			//don't know if line 89 is enough to use dots in Homepage.html (line 15) and CreateMeeting.java (line 61)
-			//so i added lines 92-94
+			request.getSession().setAttribute("user.username", u.getUsername());
+
+			//don't know if line 89 is enough to use dots in Homepage.html and CreateMeeting.java
+			//so i added lines below
 			//UPDATE: it is enough -> ${user.name} means "get the variable user and call its getName() method"
 			
 			/*
 			request.getSession().setAttribute("user.name", u.getName());
 			request.getSession().setAttribute("user.surname", u.getSurname());
-			request.getSession().setAttribute("user.username", u.getUsername());
 			*/
 			
 			path = getServletContext().getContextPath() + "/GoToHomepage";

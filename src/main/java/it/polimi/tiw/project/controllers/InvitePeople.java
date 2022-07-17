@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.project.DAO.MeetingDAO;
 import it.polimi.tiw.project.DAO.UserDAO;
@@ -65,26 +67,27 @@ public class InvitePeople extends HttpServlet {
 			throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user.username") == null) {
+		if (session.isNew() || session.getAttribute("user") == null) {
 			String loginpath = getServletContext().getContextPath() + "/index.html";
 			response.sendRedirect(loginpath);
 			return;
 		}
 		
 		if(session.getAttribute("attempt")!=null && (int)session.getAttribute("attempt") <= 3) {
-			String[] sUsersIDs = request.getParameterValues("id");
+			String[] sUsernames = request.getParameterValues("id");
 			MeetingForm meetF = (MeetingForm)session.getAttribute("meetF");
 			int maxPart = meetF.getMaxPart();
 			
-			if(sUsersIDs.length <= maxPart) {
-				// arrived at this point we should already have the correct information and we can proceed creating the meeting and inviting people to it
+			if(sUsernames.length <= maxPart) {
+				// arrived at this point we have the correct information
+				// both regarding the meeting and the participants -> we can create the meeting and invite people to it
 				MeetingDAO mDAO = new MeetingDAO(connection);
 				
 				try {
 					int key = mDAO.createMeeting(meetF.getTitle(),meetF.getDate(),meetF.getTime(),meetF.getDuration(),meetF.getMaxPart(),(String)session.getAttribute("user.username"));
 					
-					for(String s : sUsersIDs) {
-						mDAO.sendInvitation(key, Integer.parseInt(s));
+					for(String s : sUsernames) {
+						mDAO.sendInvitation(key, s);
 					}
 					
 					session.removeAttribute("meetF");
@@ -98,18 +101,31 @@ public class InvitePeople extends HttpServlet {
 					return;
 				}
 				
-			} else if (sUsersIDs.length > maxPart && (int)session.getAttribute("attempt")==3) {
-				String ctxpath = getServletContext().getContextPath(); 
-				String path = ctxpath + "/WEB-INF/CancellationPage.html";
-				response.sendRedirect(path);
+			} else if (sUsernames.length > maxPart && (int)session.getAttribute("attempt")==3) {
+				session.removeAttribute("meetF");
+				session.removeAttribute("attempt");
+				
+				String path = "/WEB-INF/CancellationPage.html";
+				ServletContext servletContext = getServletContext();
+				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+
+				ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);		//we are going to retrieve our template files as resources from the servlet context
+				templateResolver.setTemplateMode(TemplateMode.HTML);		//set even though HTML is the default mode
+				templateResolver.setSuffix(".html");						//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+				
+				this.templateEngine = new TemplateEngine();
+				this.templateEngine.setTemplateResolver(templateResolver);
+				
+				templateEngine.process(path, ctx, response.getWriter());
 				
 			} else {
 
-				int attempt = (int)session.getAttribute("attempt");
-				session.setAttribute("attempt", attempt+1);
+				int attempt = (int)session.getAttribute("attempt")+1;
+				session.setAttribute("attempt", attempt);
 				
 				UserDAO uDAO = new UserDAO(connection);
 				List<User> rUsers = new ArrayList<>();
+				List<User> sUsers = new ArrayList<>();
 				
 				try {
 					rUsers = uDAO.getRegisteredUsers();
@@ -117,17 +133,15 @@ public class InvitePeople extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-				List<User> sUsers = new ArrayList<>();
-				
 				try {
-					for(String s : sUsersIDs) {
-						sUsers.add(uDAO.getRegisteredUserByID(Integer.parseInt(s)));
+					for(String s : sUsernames) {
+						sUsers.add(uDAO.getRegisteredUserByNick(s));
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				
-				int toDeselect = sUsersIDs.length-maxPart;
+				int toDeselect = sUsernames.length-maxPart;
 				
 				String path = "/WEB-INF/RecordsPage.html";
 				ServletContext servletContext = getServletContext();
@@ -135,7 +149,15 @@ public class InvitePeople extends HttpServlet {
 				ctx.setVariable("rUsers", rUsers);
 				ctx.setVariable("sUsers", sUsers);
 				ctx.setVariable("toDeselect", toDeselect);
-				// ctx.setVariable("attempt", 1);
+				ctx.setVariable("attempt", attempt);
+				
+				ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);		//we are going to retrieve our template files as resources from the servlet context
+				templateResolver.setTemplateMode(TemplateMode.HTML);		//set even though HTML is the default mode
+				templateResolver.setSuffix(".html");						//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+				
+				this.templateEngine = new TemplateEngine();
+				this.templateEngine.setTemplateResolver(templateResolver);
+				
 				templateEngine.process(path, ctx, response.getWriter());
 				
 			}

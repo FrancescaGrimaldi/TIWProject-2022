@@ -152,9 +152,12 @@ public class MeetingDAO {
 	 * @param uID			User's ID.
 	 * @throws SQLException if there is an error while accessing the database.
 	 */
-	public void sendInvitation(int mID, int uID) throws SQLException {
+	public void sendInvitation(int mID, String creator) throws SQLException {
 		
 		String query = "INSERT into participation (meetingID, participantID) VALUES(?, ?)";
+		
+		UserDAO uDAO = new UserDAO(connection);
+		int uID = uDAO.getIDByNick(creator);
 		
 		try (PreparedStatement pstat = connection.prepareStatement(query)){
 			pstat.setInt(1, mID);

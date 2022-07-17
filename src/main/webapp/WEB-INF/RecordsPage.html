@@ -11,6 +11,10 @@
 	<h2>Please select the users you would like to invite to the meeting</h2>
 	<p
 		th:text=" 'This is your attempt number ' + ${attempt} "></p>
+	<div th:if="${attempt}==3">
+		<p th:text=" 'Be careful because this is the last one! ' "></p>
+	</div>
+	
 	<div th:if="${rUsers.size()>0}">
 		<form th:action="@{/InvitePeople}" method="POST">
 		 <table>
@@ -26,7 +30,7 @@
 			<tbody>
 				<tr th:each="u: ${rUsers}">
 					
-					<td><input type="checkbox" th:value="${u.username}" name="id" th:checked="${sUsers!=null && sUsers.contains(u)}"/></td>
+					<td><input type="checkbox" th:value="${u.username}" th:name="id" th:checked="${sUsers!=null && sUsers.contains(u)}"/></td>
 					<td th:text="${u.username}"></td>
 					<td th:text="${u.email}"></td>
 					<td th:text="${u.name}"></td>
@@ -35,8 +39,14 @@
 			</tbody>	
 		 </table>
 		
-	
+		<div th:if="${toDeselect}!=null">
+			<p th:text=" 'You need to deselect ' + ${toDeselect} + ' user(s)'"></p>
+		</div>
+		
 		<input type="submit" name="Invite people"/>
 		</form>
 	</div>
+	
+	
+		
 </body>

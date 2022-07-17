@@ -67,9 +67,9 @@ public class GoToRecordsPage extends HttpServlet {
 		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
-			System.out.println("\nDENTRO L'IF\n");
+			System.out.println("\nDENTRO L'IF DELLA SESSIONE NUOVA IN GOTORECORDSPAGE\n");
+			
 			String loginpath = getServletContext().getContextPath() + "/index.html";
-
 			return;
 		}
 
@@ -102,11 +102,12 @@ public class GoToRecordsPage extends HttpServlet {
 			String path = "/WEB-INF/RecordsPage.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			
 			ctx.setVariable("rUsers", rUsers);
 			ctx.setVariable("sUsers", sUsers);
 			ctx.setVariable("attempt", 1);
-			ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);		//we are going to retrieve our template files as resources from the servlet context
 			
+			ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);		//we are going to retrieve our template files as resources from the servlet context
 			templateResolver.setTemplateMode(TemplateMode.HTML);		//set even though HTML is the default mode
 			templateResolver.setSuffix(".html");						//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
 			
