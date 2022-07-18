@@ -56,8 +56,8 @@ public class MeetingForm {
 		this.title = title;
 		if (title == null || title.isEmpty()) {
 			this.titleError = "A title must be inserted.";
-		} else if ( !title.matches("(?=[^A-Za-z]*[a-zA-Z])[a-zA-Z\\s]") ){
-			this.titleError = "The title can only contain letters and spaces.";
+		} else if ( !title.matches("[a-zA-Z]+") ){
+			this.titleError = "The title can only contain a word.";
 		} else {
 			this.titleError = null;
 		}
@@ -72,7 +72,7 @@ public class MeetingForm {
 	public void setDate(String date) {
 		DateChecker dc = new DateChecker();
 		
-		// checks if date format matches a regexp
+		// checks if date format matches a regexp NEED TO CHANGE IT
 		if (date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
 			this.date = dc.fromStrToDate(date);
@@ -141,6 +141,7 @@ public class MeetingForm {
 	 */
 	public void setMaxPart(int maxPart) {
 		this.maxPart = maxPart;
+		
 		if (maxPart == 0) {
 			this.maxPartError = "Participants can't be zero!";
 		} else if (maxPart > 50) {

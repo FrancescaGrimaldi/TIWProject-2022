@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Sign up</title>
+	<meta charset="ISO-8859-1">
+	<title>Sign up</title>
 </head>
+
 <body>
 	<div align="right">
 		<form method="GET" action="index.html">
@@ -17,32 +18,32 @@
 	<form action="CreateUser" method="POST">
 		<fieldset>
 			<p>
-				Username: <input type="text" name="username" required maxlength="100" />
+				Username: <input type="text" name="username" required maxlength="50" />
 			</p>
 			<p>
 				Email: <input type="email" name="email" required maxlength="100" />
 			<p>
 				Password: <input type="password" name="password" required
-					maxlength="100" />
+					maxlength="50" />
 			</p>
 			<p>
 				Confirm password: <input type="password" name="password2" required
-					maxlength="100" />
+					maxlength="50" />
 			</p>
 			<p>
-				Name: <input type="text" name="name" required maxlength="100" />
+				Name: <input type="text" name="name" required maxlength="50" />
 			</p>
 			<p>
-				Surname: <input type="text" name="surname" required maxlength="100" />
+				Surname: <input type="text" name="surname" required maxlength="50" />
 			</p>
 			<p>
 				Age: <input type="number" name="age" required min="5" max="123" />
 			</p>
 			<p>
-				City: <input type="text" name="city" required maxlength="100" />
+				City: <input type="text" name="city" required maxlength="50" />
 			</p>
 
-			<input type="submit" name="Sign up">
+			<input type="submit" name="Signup">
 		</fieldset>
 	</form>
 	

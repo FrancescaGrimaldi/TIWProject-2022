@@ -2,12 +2,10 @@ package it.polimi.tiw.project.controllers;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import it.polimi.tiw.project.DAO.UserDAO;
 import it.polimi.tiw.project.beans.User;
+import it.polimi.tiw.project.utilities.ConnectionHandler;
+
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -27,32 +27,31 @@ public class CheckLogin extends HttpServlet {
 	private Connection connection;
 	private TemplateEngine templateEngine;
 
+	
 	public CheckLogin() {
 		super();
 	}
 
+	
 	public void init() throws ServletException {
-		try {
-			ServletContext context = getServletContext();
-			String driver = context.getInitParameter("dbDriver");
-			String url = context.getInitParameter("dbUrl");
-			String user = context.getInitParameter("dbUser");
-			String password = context.getInitParameter("dbPassword");
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, user, password);
-
-		} catch (ClassNotFoundException e) {
-			throw new UnavailableException("Can't load database driver");
-		} catch (SQLException e) {
-			throw new UnavailableException("Couldn't get db connection");
-		}
+		ServletContext servletContext = getServletContext();
+		
+		connection = ConnectionHandler.getConnection(servletContext);
+		
+		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext); //we are going to retrieve our template files as resources from the servlet context
+		templateResolver.setTemplateMode(TemplateMode.HTML);			//set even though HTML is the default mode
+		templateResolver.setSuffix(".html");							//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+		this.templateEngine = new TemplateEngine();
+		this.templateEngine.setTemplateResolver(templateResolver);
 	}
+	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
@@ -89,18 +88,13 @@ public class CheckLogin extends HttpServlet {
 
 		String path;
 		if (u == null) {
-			ServletContext servletContext = getServletContext();
+			path = "/index.html";
 			
-			ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-			templateResolver.setTemplateMode(TemplateMode.HTML);
-			this.templateEngine = new TemplateEngine();
-			this.templateEngine.setTemplateResolver(templateResolver);
-			templateResolver.setSuffix(".html");
-
+			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", "Incorrect username or password");
-			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
+			
 		} else {
 			request.getSession().setAttribute("user", u);
 			request.getSession().setAttribute("user.username", u.getUsername());
@@ -120,12 +114,12 @@ public class CheckLogin extends HttpServlet {
 
 	}
 	
+	
 	public void destroy() {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (SQLException sqle) {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
