@@ -76,7 +76,7 @@ public class MeetingForm {
 		if (date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
 			this.date = dc.fromStrToDate(date);
-			System.out.println(this.date.toString());
+			//System.out.println(this.date.toString());
 			
 				// checks if date is in the past
 				if (dc.isPastDate(this.date)) {
@@ -184,10 +184,10 @@ public class MeetingForm {
 		String error = " ";
 
 		if(titleError!=null) error=error.concat(titleError+" ");
-		if(dateError!=null) error=error.concat(timeError+" ");
-		if(timeError!=null) error=error.concat(titleError+" ");
-		if(durationError!=null) error=error.concat(timeError+" ");
-		if(maxPartError!=null) error=error.concat(titleError+" ");
+		if(dateError!=null) error=error.concat(dateError+" ");
+		if(timeError!=null) error=error.concat(timeError+" ");
+		if(durationError!=null) error=error.concat(durationError+" ");
+		if(maxPartError!=null) error=error.concat(maxPartError+" ");
 
 		return error;
 	}
