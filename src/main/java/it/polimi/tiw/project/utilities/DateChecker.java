@@ -1,6 +1,7 @@
 package it.polimi.tiw.project.utilities;
 
 import java.util.Date;
+import java.util.stream.IntStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -135,4 +136,39 @@ public class DateChecker {
 		}
 	}
 	
+	
+	public String checkDate(int day, int month, int year) {
+		int[] months30Days = new int[] {4,6,9,11};
+		String dateError = null;
+		
+		if ( month < 1 || month > 12 ) {
+			return dateError = "Month must be valid.";
+		}
+		
+		if ( day < 1 || day > 31 ) {
+			return dateError = "Day must be valid.";
+		} 
+		
+		if ( IntStream.of(months30Days).anyMatch(x -> x == month) && day == 31) {
+			return dateError = "Date must be valid.";
+		}
+		
+		if ( month == 2 && day > 28 ) {
+			if ( day == 29 && checkLeapYear(year) ) {
+				return dateError = null;
+			}
+			return dateError = "Date must be valid";
+		}
+		
+		return null;
+	}
+	
+	
+	private boolean checkLeapYear(int year) {
+		if ( year%400==0 ) return true;
+		if ( year%100==0 ) return false;
+		if ( year%4==0 ) return true;
+		
+		return false;
+	}
 }

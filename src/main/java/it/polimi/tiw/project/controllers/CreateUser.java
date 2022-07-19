@@ -61,8 +61,15 @@ public class CreateUser extends HttpServlet {
 		String password2 = request.getParameter("password2");
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
-		Integer age = Integer.parseInt(request.getParameter("age"));	//need to surround this with a try catch
 		String city = request.getParameter("city");
+		
+		Integer age = 0;
+		try {
+			age = Integer.parseInt(request.getParameter("age"));
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Age must be a number.");
+			return;
+		}
 		
 		UserForm userF = new UserForm(email, username, password, password2, name, surname, age, city);
 		

@@ -2,6 +2,8 @@ package it.polimi.tiw.project.utilities;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
 * This class provides methods to check if the input inserted in 
@@ -54,10 +56,10 @@ public class MeetingForm {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
-		if (title == null || title.isEmpty()) {
-			this.titleError = "A title must be inserted.";
-		} else if ( !title.matches("[a-zA-Z]+") ){
-			this.titleError = "The title can only contain a word.";
+		if (title == null || title.isBlank()) {
+			this.titleError = "A title must be inserted (it can't only contain spaces).";
+		} else if ( !title.matches("[a-zA-Z0-9 _]+") ){
+			this.titleError = "The title can only contain alphanumeric characters and spaces.";
 		} else {
 			this.titleError = null;
 		}
@@ -72,21 +74,29 @@ public class MeetingForm {
 	public void setDate(String date) {
 		DateChecker dc = new DateChecker();
 		
-		// checks if date format matches a regexp NEED TO CHANGE IT
+		// checks if date format matches a regex
 		if (date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
+			Integer monthNumber = Integer.parseInt(date.substring(5,7));
+			Integer dayNumber = Integer.parseInt(date.substring(8,10));
+			Integer yearNumber = Integer.parseInt(date.substring(0,4));
+					
+			this.dateError = dc.checkDate(dayNumber, monthNumber, yearNumber);
+			
+			if (this.dateError != null) return;			
+		
 			this.date = dc.fromStrToDate(date);
 			//System.out.println(this.date.toString());
 			
-				// checks if date is in the past
-				if (dc.isPastDate(this.date)) {
-					this.dateError = "Date cannot be in the past.";
-				} else {
-					this.dateError = null;
-				}
+			// checks if date is in the past
+			if (dc.isPastDate(this.date)) {
+				this.dateError = "Date cannot be in the past.";
+				return;
+			}
 
 		} else {
 			this.dateError = "Date must be in the format yyyy-MM-dd";
+			return;
 		}
 
 	}
@@ -106,12 +116,14 @@ public class MeetingForm {
 			// parses the String time in order to have a Time object
 			this.time = dc.fromStrToTime(time);
 
-				// if date == today's date, checks if time is in the past
-				if (dc.isToday(this.date) && dc.isPastTime(this.time)) {
-					this.timeError = "Time cannot be in the past.";
-				} else {
-					this.timeError = null;
-				}
+			if(this.date == null) return;
+			
+			// if date == today's date, checks if time is in the past
+			if (dc.isToday(this.date) && dc.isPastTime(this.time)) {
+				this.timeError = "Time cannot be in the past.";
+			} else {
+				this.timeError = null;
+			}
 
 		} else {
 			this.timeError = "Time must be in the format hh:mm.";
