@@ -12,7 +12,7 @@ import java.util.List;
 
 import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.beans.User;
-import it.polimi.tiw.project.utilities.DateChecker;
+// import it.polimi.tiw.project.utilities.DateChecker;
 
 /**
  * This class manages the access to the database containing created meetings.
@@ -39,7 +39,7 @@ public class MeetingDAO {
 	public List<Meeting> findCreatedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<>();
 		
-		String query = "SELECT * FROM meeting WHERE creator = ?";
+		String query = "SELECT * FROM meeting WHERE creator = ? AND addtime(date,time)>now()";
 		try(PreparedStatement pstat = connection.prepareStatement(query)) {
 			pstat.setInt(1, u.getID());
 			try(ResultSet result = pstat.executeQuery()){
@@ -69,9 +69,9 @@ public class MeetingDAO {
 	 */
 	public List<Meeting> findInvitedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<>();
-		DateChecker dc = new DateChecker();
+		// DateChecker dc = new DateChecker();
 		
-		String query = "SELECT * FROM meeting M JOIN participation P on M.meetingID = P.meetingID WHERE P.participantID = ?";
+		String query = "SELECT * FROM meeting M JOIN participation P on M.meetingID = P.meetingID WHERE P.participantID = ? AND addtime(date,time)>now()";
 		try(PreparedStatement pstat = connection.prepareStatement(query)){
 			pstat.setInt(1, u.getID());
 			try(ResultSet result = pstat.executeQuery()){
@@ -89,6 +89,7 @@ public class MeetingDAO {
 			}
 		}
 		
+		/*
 		//removing the meetings started in the past
 		//check date and time+duration
 		for(Meeting m : meetings) {
@@ -96,6 +97,7 @@ public class MeetingDAO {
 				meetings.remove(m);
 			}
 		}
+		*/
 		
 		return meetings;
 	}

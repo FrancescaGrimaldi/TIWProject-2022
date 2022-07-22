@@ -2,8 +2,6 @@ package it.polimi.tiw.project.utilities;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.Arrays;
-import java.util.stream.IntStream;
 
 /**
 * This class provides methods to check if the input inserted in 

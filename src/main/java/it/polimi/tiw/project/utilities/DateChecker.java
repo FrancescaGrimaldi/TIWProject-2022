@@ -139,6 +139,7 @@ public class DateChecker {
 	
 	public String checkDate(int day, int month, int year) {
 		int[] months30Days = new int[] {4,6,9,11};
+		@SuppressWarnings("unused")
 		String dateError = null;
 		
 		if ( month < 1 || month > 12 ) {

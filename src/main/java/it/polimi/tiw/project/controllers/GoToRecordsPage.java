@@ -61,8 +61,8 @@ public class GoToRecordsPage extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		if (session.isNew() || session.getAttribute("user") == null) {
-			//System.out.println("\nDENTRO L'IF DELLA SESSIONE NUOVA IN GOTORECORDSPAGE\n");
 			String loginpath = getServletContext().getContextPath() + "/index.html";
+			response.sendRedirect(loginpath);
 			return;
 		}
 
