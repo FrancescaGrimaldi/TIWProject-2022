@@ -88,16 +88,6 @@ public class CreateUser extends HttpServlet {
 				}
 			} else {
 				//the form is correct but the username is already taken
-				
-				/*
-				String path = "/SignUp.html";
-				request.setAttribute("userForm", userF);
-				request.setAttribute("errorMsg", "The username you chose is already taken");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-				dispatcher.forward(request, response);
-				return;
-				*/
-				
 				String path = "/SignUp.html";
 				ServletContext servletContext = getServletContext();
 				final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -111,7 +101,6 @@ public class CreateUser extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errors", userF.getErrors());
-			System.out.println("\nERRORS: "+userF.getErrors());
 			templateEngine.process(path, ctx, response.getWriter());
 		}
 

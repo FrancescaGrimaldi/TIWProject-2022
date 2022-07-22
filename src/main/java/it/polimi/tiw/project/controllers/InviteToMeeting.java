@@ -25,14 +25,14 @@ import it.polimi.tiw.project.beans.User;
 import it.polimi.tiw.project.utilities.ConnectionHandler;
 import it.polimi.tiw.project.utilities.MeetingForm;
 
-@WebServlet("/InvitePeople")
-public class InvitePeople extends HttpServlet {
+@WebServlet("/InviteToMeeting")
+public class InviteToMeeting extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection;
 
 	
-	public InvitePeople() {
+	public InviteToMeeting() {
 		super();
 	}
 
