@@ -12,8 +12,7 @@ import java.time.LocalDate;
 public class DateChecker {
 	private SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm");
 	private SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-	
-	
+
 	/**
 	 * Class constructor.
 	 */
@@ -177,7 +176,7 @@ public class DateChecker {
 	
 	/**
 	 * Checks whether the given year is a leap year or not.
-	 * Utility for {{@link #checkDate(int, int, int) checkDate} method.
+	 * Utility for {@link #checkDate(int, int, int) checkDate} method.
 	 * @param year		the year to check.
 	 * @return			a boolean whose value is:
 	 * 					<p>

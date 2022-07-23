@@ -92,7 +92,7 @@ public class GoToRecordsPage extends HttpServlet {
 		MeetingForm meetF = new MeetingForm(title, startDate, startTime, duration, maxPart);
 		
 		if (meetF.isValid()) {
-			//redirect to the RecordsPage.html to select participants
+			//meeting creation can proceed redirecting to RecordsPage.html to select participants
 			session.setAttribute("attempt", 1);
 			session.setAttribute("meetF", meetF);
 			

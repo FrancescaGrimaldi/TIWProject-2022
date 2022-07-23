@@ -97,7 +97,7 @@ public class InviteToMeeting extends HttpServlet {
 					String ctxpath = getServletContext().getContextPath();
 					String path = ctxpath + "/GoToHomepage";
 					response.sendRedirect(path);
-				} catch(SQLException e3) {
+				} catch(SQLException e) {
 					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Issue with DB");
 					return;
 				}

@@ -4,7 +4,6 @@ package it.polimi.tiw.project.beans;
  * This class represents the users of the platform.
  */
 public class User {
-	
 	private int userID;
 	private String username;
 	private String name;
@@ -13,7 +12,6 @@ public class User {
 	private String password;
 	private int age;
 	private String city;
-	
 	
 	/**
 	 * Class constructor.

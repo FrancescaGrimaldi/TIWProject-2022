@@ -19,7 +19,6 @@ import it.polimi.tiw.project.beans.User;
 public class MeetingDAO {
 	private Connection connection;
 
-
 	/**
 	 * Class constructor.
 	 * @param c				the Connection.

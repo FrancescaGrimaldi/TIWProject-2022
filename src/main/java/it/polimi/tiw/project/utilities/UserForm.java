@@ -22,9 +22,8 @@ public class UserForm {
 	private String ageError;
 	private String cityError;
 	
-	
 	/**
-	 * Default constructor.
+	 * Class constructor.
 	 */
 	public UserForm() {
 		super();

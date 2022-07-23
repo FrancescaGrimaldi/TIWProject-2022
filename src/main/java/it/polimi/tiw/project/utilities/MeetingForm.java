@@ -20,9 +20,8 @@ public class MeetingForm {
 	private String durationError;
 	private String maxPartError;
 
-	
 	/**
-	 * Default constructor.
+	 * Class constructor.
 	 */
 	public MeetingForm() {
 		super();
@@ -49,7 +48,7 @@ public class MeetingForm {
 
 	/**
 	 * Sets the title of the meeting checking that it's a string (not empty)
-	 * only made up of letters.
+	 * only made up of alphanumeric characters.
 	 * @param title		the title inserted.
 	 */
 	public void setTitle(String title) {
@@ -75,8 +74,8 @@ public class MeetingForm {
 		
 		if (date!=null && date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
-			Integer monthNumber = Integer.parseInt(date.substring(5,7));
 			Integer dayNumber = Integer.parseInt(date.substring(8,10));
+			Integer monthNumber = Integer.parseInt(date.substring(5,7));
 			Integer yearNumber = Integer.parseInt(date.substring(0,4));
 			//NumberFormatException is never thrown because the regex checks that the string only contains numbers and -
 					

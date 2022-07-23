@@ -46,8 +46,8 @@ public class CreateUser extends HttpServlet {
 		connection = ConnectionHandler.getConnection(servletContext);
 		
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext); //we are going to retrieve our template files as resources from the servlet context
-		templateResolver.setTemplateMode(TemplateMode.HTML);			//set even though HTML is the default mode
-		templateResolver.setSuffix(".html");							//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+		templateResolver.setTemplateMode(TemplateMode.HTML);												  //set even though HTML is the default mode
+		templateResolver.setSuffix(".html");																  //modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 	}
