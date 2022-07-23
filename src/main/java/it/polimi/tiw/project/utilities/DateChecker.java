@@ -33,6 +33,7 @@ public class DateChecker {
 		try {
 			javaDate = dateFormatter.parse(string);
 		} catch (ParseException pex) {
+			//this exception is never thrown because the method is only called if certain that the string is in the proper format
 			pex.printStackTrace();
 		}
 		
@@ -53,6 +54,7 @@ public class DateChecker {
 		try {
 			javaTime = timeFormatter.parse(string);
 		} catch (ParseException pex) {
+			//this exception is never thrown because the method is only called if certain that the string is in the proper format
 			pex.printStackTrace();
 		}
 		
@@ -137,6 +139,14 @@ public class DateChecker {
 	}
 	
 	
+	/**
+	 * Checks date, month and year of a date to check that the
+	 * combination is valid.
+	 * @param day		the day.
+	 * @param month		the month.
+	 * @param year		the year.
+	 * @return			a String containing the errors ({@code null} if there are no errors).
+	 */
 	public String checkDate(int day, int month, int year) {
 		int[] months30Days = new int[] {4,6,9,11};
 		@SuppressWarnings("unused")
@@ -150,7 +160,7 @@ public class DateChecker {
 			return dateError = "Day must be valid.";
 		} 
 		
-		if ( IntStream.of(months30Days).anyMatch(x -> x == month) && day == 31) {
+		if ( IntStream.of(months30Days).anyMatch(x -> x == month) && day == 31 ) {
 			return dateError = "Date must be valid.";
 		}
 		
@@ -165,6 +175,17 @@ public class DateChecker {
 	}
 	
 	
+	/**
+	 * Checks whether the given year is a leap year or not.
+	 * Utility for {{@link #checkDate(int, int, int) checkDate} method.
+	 * @param year		the year to check.
+	 * @return			a boolean whose value is:
+	 * 					<p>
+	 * 					-{@code true} if it's a leap year;
+	 * 					</p> <p>
+	 * 					-{@code false} otherwise.
+	 * 					</p>
+	 */
 	private boolean checkLeapYear(int year) {
 		if ( year%400==0 ) return true;
 		if ( year%100==0 ) return false;
@@ -172,4 +193,5 @@ public class DateChecker {
 		
 		return false;
 	}
+	
 }

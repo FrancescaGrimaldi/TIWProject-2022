@@ -14,13 +14,13 @@ public class UserForm {
 	private String surname;
 	private int age;
 	private String city;
-	private String emailError = null;
-	private String usernameError = null;
-	private String passwordError = null;
-	private String nameError = null;
-	private String surnameError = null;
-	private String ageError = null;
-	private String cityError = null;
+	private String emailError;
+	private String usernameError;
+	private String passwordError;
+	private String nameError;
+	private String surnameError;
+	private String ageError;
+	private String cityError;
 	
 	
 	/**
@@ -112,16 +112,16 @@ public class UserForm {
 
 	
 	/**
-	 * Sets the name of the user checking that it's not empty and that
-	 * it only contains letters (using a regex).
+	 * Sets the name of the user checking that it's not empty or blank
+	 * and that it contains letters only (using a regex).
 	 * @param name		the name inserted.
 	 */
 	public void setName(String name) {
 		this.name = name;
 		
-		if(name == null || name.equals("")) {
-			this.nameError = "Name field cannot be empty.";
-		} else if( !(name.matches("[a-zA-Z]+")) ) {
+		if(name == null || name.equals("") || name.isBlank()) {
+			this.nameError = "Name field cannot be empty (it can't only contain spaces).";
+		} else if( !(name.matches("[a-zA-Z ]+")) ) {
 			this.nameError = "Name field can only contain letters.";
 		} else {
 			this.nameError = null;
@@ -130,16 +130,16 @@ public class UserForm {
 	
 	
 	/**
-	 * Sets the surname of the user checking that it's not empty and that
-	 * it only contains letters (using a regex).
+	 * Sets the surname of the user checking that it's not empty or blank
+	 * and that it contains letters only (using a regex).
 	 * @param surname	the surname inserted.
 	 */
 	public void setSurname(String surname) {
 		this.surname = surname;
 		
-		if(surname == null || surname.equals("")) {
-			this.surnameError = "Surname field cannot be empty.";
-		} else if( !(surname.matches("[a-zA-Z]+")) ) {
+		if(surname == null || surname.equals("") || name.isBlank()) {
+			this.surnameError = "Surname field cannot be empty (it can't only contain spaces).";
+		} else if( !(surname.matches("[a-zA-Z ]+")) ) {
 			this.surnameError = "Surname field can only contain letters.";
 		} else {
 			this.surnameError = null;
@@ -163,16 +163,16 @@ public class UserForm {
 	
 	
 	/**
-	 * Sets the city of the user checking that it's not empty and that
-	 * it only contains letters (using a regex).
+	 * Sets the city of the user checking that it's not empty or blank
+	 * and that it contains letters only (using a regex).
 	 * @param city		the city inserted.
 	 */
 	public void setCity(String city) {
 		this.city = city;
 		
 		if(city == null || city.equals("")) {
-			this.cityError = "City field cannot be empty.";
-		} else if ( !(city.matches("[a-zA-Z]+")) ) {
+			this.cityError = "City field cannot be empty (it can't only contain spaces).";
+		} else if ( !(city.matches("[a-zA-Z ]+")) ) {
 			this.cityError = "City field can only contain letters.";
 		} else {
 			this.cityError = null;
@@ -211,8 +211,11 @@ public class UserForm {
 	}
 	
 	
-	/* The following methods are getters for the error strings */
-	
+	/**
+	 * This method is a getter for all the error strings.
+	 *
+	 * @return			a String containing the errors.
+	 */
 	public String getErrors(){
 		String error = " ";
 

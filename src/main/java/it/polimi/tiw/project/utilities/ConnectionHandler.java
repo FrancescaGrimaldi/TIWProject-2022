@@ -6,9 +6,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * This class is useful to handle the connection to the database.
+ */
 public class ConnectionHandler {
 
-	
+    /**
+     * Returns the connection to the database.
+     * @param context 				 the ServletContext} of the Servlet.
+     * @return 						 the Connection to the database.
+     * @throws UnavailableException  if the connection cannot be initialized.
+     */
 	public static Connection getConnection(ServletContext context) throws UnavailableException {
 		Connection connection = null;
 		try {
@@ -27,6 +35,11 @@ public class ConnectionHandler {
 	}
 
 	
+	/**
+	 * Closes the connection to the database.
+	 * @param connection			 the Connection to close.
+	 * @throws SQLException			 if an error occurs while trying to close the connection.
+	 */
 	public static void closeConnection(Connection connection) throws SQLException {
 		if (connection != null) {
 			connection.close();

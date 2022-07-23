@@ -21,41 +21,46 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+/**
+ * This servlet controls the login.
+ */
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection;
 	private TemplateEngine templateEngine;
 
-	
+	/**
+	 * Class constructor.
+	 */
 	public CheckLogin() {
 		super();
 	}
 
 	
+	/**
+	 * Initializes the connection to the database.
+	 */
 	public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		
 		connection = ConnectionHandler.getConnection(servletContext);
 		
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext); //we are going to retrieve our template files as resources from the servlet context
-		templateResolver.setTemplateMode(TemplateMode.HTML);			//set even though HTML is the default mode
-		templateResolver.setSuffix(".html");							//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+		templateResolver.setTemplateMode(TemplateMode.HTML);												  //set even though HTML is the default mode
+		templateResolver.setSuffix(".html");																  //modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 	}
 	
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-	}
-
-	
+	/**
+	 * Checks the validity of the inserted username and password and authenticates
+	 * the user (querying the db), redirecting to the homepage or displaying the
+	 * errors (if any occurs).
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		// obtain and escape params
 		String usrn = null;
 		String pwd = null;
 		
@@ -63,31 +68,28 @@ public class CheckLogin extends HttpServlet {
 			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("password"));
 			
-			if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
+			if (isInvalid(usrn) || isInvalid(pwd)) {
 				throw new Exception("Missing or empty credential value");
 			}
 
 		} catch (Exception e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
 			return;
 		}
 
-		// query db to authenticate for user
+		//authenticate for user
 		UserDAO uDAO = new UserDAO(connection);
 		User u = null;
 		try {
-			u = uDAO.checkCredentials(usrn, pwd);
+			u = uDAO.checkCredentials(usrn, pwd);		//returns User u || null
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Impossible to check credentials");
 			return;
 		}
 
-		// If the user exists, add info to the session and go to home page, 
-		// otherwise show login page with error message
-
 		String path;
 		if (u == null) {
+			//if the user does not exist, show error message
 			path = "/index.html";
 			
 			ServletContext servletContext = getServletContext();
@@ -96,6 +98,7 @@ public class CheckLogin extends HttpServlet {
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else {
+			//if the user exists, add info to the session and go to home page
 			request.getSession().setAttribute("user", u);
 			request.getSession().setAttribute("user.username", u.getUsername());
 			
@@ -106,12 +109,38 @@ public class CheckLogin extends HttpServlet {
 	}
 	
 	
+	/**
+	 * Checks whether the given string is null or empty.
+	 * Used in {@link #doPost(HttpServletRequest, HttpServletResponse) doPost}
+	 * to check if the credentials are valid.
+	 * @param str		the String to check.
+	 * @return			a boolean whose value is:
+	 * 					<p>
+	 * 					-{@code true} if it's incorrect;
+	 * 					</p> <p>
+	 * 					-{@code false} otherwise.
+	 * 					</p>
+	 */
+	private boolean isInvalid(String str) {
+		return ( str==null || str.isEmpty() );
+	}
+	
+	
+	/**
+	 * Closes the connection to the database.
+	 */
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 	
 }

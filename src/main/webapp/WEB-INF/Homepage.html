@@ -88,12 +88,12 @@
 					Time: <input type="time" name="time" placeholder="hh:mm" required />
 				</p>
 				<p>
-					Duration (in minutes): <input type="number" name="duration" min=1
+					Duration (in minutes): <input type="number" name="duration" min=1 max=720
 						required />
 				</p>
 				<p>
 					Maximum number of participants: <input type="number" name="maxPart"
-						min=1 required />
+						min=1 max=50 required />
 				</p>
 
 				<input type="submit" name="Create Meeting">
@@ -104,16 +104,6 @@
 			<p th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
 		</div>
 		
-	</div>
-
-	<!-- THIS WILL NEVER HAPPEN -->
-	<div th:if="${session.user}==null">
-		<p>You aren't logged in!</p>
-		<div align="left">
-			<form method="GET" action="index.html">
-				<button type="submit">Log in</button>
-			</form>
-		</div>
 	</div>
 	
 </body>

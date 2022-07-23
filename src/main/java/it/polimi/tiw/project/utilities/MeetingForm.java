@@ -5,13 +5,13 @@ import java.sql.Time;
 
 /**
 * This class provides methods to check if the input inserted in 
-* the createMeeting form is correct and sets the messages for
+* the SignUp.html form is correct and sets the messages for
 * potential errors.
 */
 public class MeetingForm {
 	private String title;
-	private Date date; // in SQL date format
-	private Time time; // in SQL time format
+	private Date date; //in SQL date format
+	private Time time; //in SQL time format
 	private int duration;
 	private int maxPart;
 	private String titleError;
@@ -54,9 +54,10 @@ public class MeetingForm {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+		
 		if (title == null || title.isBlank()) {
 			this.titleError = "A title must be inserted (it can't only contain spaces).";
-		} else if ( !title.matches("[a-zA-Z0-9 _]+") ){
+		} else if ( !title.matches("[a-zA-Z0-9 ]+") ){
 			this.titleError = "The title can only contain alphanumeric characters and spaces.";
 		} else {
 			this.titleError = null;
@@ -72,29 +73,24 @@ public class MeetingForm {
 	public void setDate(String date) {
 		DateChecker dc = new DateChecker();
 		
-		// checks if date format matches a regex
-		if (date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
+		if (date!=null && date.matches("[0-9]{4}[-]{1}[0-9]{2}[-]{1}[0-9]{2}")) {
 			
 			Integer monthNumber = Integer.parseInt(date.substring(5,7));
 			Integer dayNumber = Integer.parseInt(date.substring(8,10));
 			Integer yearNumber = Integer.parseInt(date.substring(0,4));
+			//NumberFormatException is never thrown because the regex checks that the string only contains numbers and -
 					
 			this.dateError = dc.checkDate(dayNumber, monthNumber, yearNumber);
-			
-			if (this.dateError != null) return;			
+			if (this.dateError != null) return;		
 		
 			this.date = dc.fromStrToDate(date);
-			//System.out.println(this.date.toString());
 			
-			// checks if date is in the past
 			if (dc.isPastDate(this.date)) {
 				this.dateError = "Date cannot be in the past.";
-				return;
 			}
 
 		} else {
-			this.dateError = "Date must be in the format yyyy-MM-dd";
-			return;
+			this.dateError = "Date must be in the format yyyy-MM-dd.";
 		}
 
 	}
@@ -108,15 +104,14 @@ public class MeetingForm {
 	public void setTime(String time) {
 		DateChecker dc = new DateChecker();
 
-		// checks if time format matches the regexp
 		if (time.matches("([01]?[0-9]|2[0-3]):[0-5][0-9]")) {
 
-			// parses the String time in order to have a Time object
 			this.time = dc.fromStrToTime(time);
-
+			
+			//we need the date to confront it with today, so if it wasn't set, time can't be set either
 			if(this.date == null) return;
 			
-			// if date == today's date, checks if time is in the past
+			//if date == today's date, checks if time is in the past
 			if (dc.isToday(this.date) && dc.isPastTime(this.time)) {
 				this.timeError = "Time cannot be in the past.";
 			} else {
@@ -131,13 +126,16 @@ public class MeetingForm {
 
 	/**
 	 * Sets the duration of the meeting checking that the number inserted
-	 * is greater than zero.
+	 * is >0 and <=720.
 	 * @param duration	the duration inserted.
 	 */
 	public void setDuration(int duration) {
 		this.duration = duration;
+		
 		if (duration == 0) {
 			this.durationError = "Duration can't be zero minutes.";
+		} else if (duration > 720) {
+			this.durationError = "Duration can't be more than 12 hours.";
 		} else {
 			this.durationError = null;
 		}
@@ -146,14 +144,14 @@ public class MeetingForm {
 
 	/**
 	 * Sets the maximum number of participants for the meeting checking that
-	 * the number inserted is >0 and <50.
+	 * the number inserted is >0 and <=50.
 	 * @param maxPart	the number inserted.
 	 */
 	public void setMaxPart(int maxPart) {
 		this.maxPart = maxPart;
 		
 		if (maxPart == 0) {
-			this.maxPartError = "Participants can't be zero!";
+			this.maxPartError = "Participants can't be zero.";
 		} else if (maxPart > 50) {
 			this.maxPartError = "You can't invite more than 50 people.";
 		} else {

@@ -27,7 +27,7 @@ public class UserDAO {
 	 * Used in {@link MeetingDAO}'s method {@link MeetingDAO#createMeeting createMeeting}.
 	 * @param username		user's nickname.
 	 * @return				the corresponding ID.
-	 * @throws SQLException	if there is an error while accessing the database.
+	 * @throws SQLException	if an error occurs while accessing the database.
 	 */
 	public int getIDByNick(String username) throws SQLException {
 		
@@ -38,7 +38,7 @@ public class UserDAO {
 			
 			try(ResultSet result = pstat.executeQuery()){
 				//to be 100% sure that a row with that username exists in the database
-				// even though it should be impossible to have the wrong username
+				//even though it should be impossible to have the wrong username
 				if (!result.isBeforeFirst()) {
 					return -1;
 				}
@@ -57,9 +57,8 @@ public class UserDAO {
 	 * to display creator's username instead of their ID in the Homepage.
 	 * @param id			user's ID.
 	 * @return				the corresponding username.
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
-	//used in GoToHomepage to display creator's username instead of their id
 	public String getNickByID(int id) throws SQLException {
 		
 		String query = "SELECT username FROM user WHERE userID = ?";
@@ -69,7 +68,7 @@ public class UserDAO {
 			
 			try(ResultSet result = pstat.executeQuery()){
 				//to be 100% sure that a row with that id exists in the database
-				// even though it should be impossible to have the wrong id
+				//even though it should be impossible to have the wrong id
 				if(!result.isBeforeFirst()) {
 					return null;
 				}
@@ -86,7 +85,7 @@ public class UserDAO {
 	 * @param username		the username.
 	 * @param password		the password.
 	 * @return				the corresponding User (if exists).
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public User checkCredentials(String username, String password) throws SQLException {
 		
@@ -127,7 +126,7 @@ public class UserDAO {
 	 * @param age			the age.
 	 * @param city			the city.
 	 * @return				the index of the newly created row.
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public int createUser(String email, String username, String name, String surname, String password, int age, String city) throws SQLException {
 		int code;
@@ -160,7 +159,7 @@ public class UserDAO {
 	 * 						</p> <p>
 	 * 						-{@code false} otherwise.
 	 * 						</p>
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public boolean checkAvailability(String username) throws SQLException {
 		
@@ -188,7 +187,7 @@ public class UserDAO {
 	/**
 	 * Gets users' information to display in RecordsPage.
 	 * @return				a List of Users with the information needed.
-	 * @throws SQLException	if there is an error while accessing the database.
+	 * @throws SQLException	if an error occurs while accessing the database.
 	 */
 	public List<User> getRegisteredUsers() throws SQLException {
 		List<User> users = new ArrayList<>();

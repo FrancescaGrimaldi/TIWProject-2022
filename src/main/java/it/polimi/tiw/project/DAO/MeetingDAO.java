@@ -12,10 +12,9 @@ import java.util.List;
 
 import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.beans.User;
-// import it.polimi.tiw.project.utilities.DateChecker;
 
 /**
- * This class manages the access to the database containing created meetings.
+ * This class manages the access to the database containing the meetings.
  */
 public class MeetingDAO {
 	private Connection connection;
@@ -31,10 +30,11 @@ public class MeetingDAO {
 
 
 	/**
-	 * Finds the meetings that the given user has created.
+	 * Finds the meetings that the given user has created, excluding those
+	 * that started in the past.
 	 * @param u				the given User.
 	 * @return				a List containing the created Meetings.
-	 * @throws SQLException	if there is an error while accessing the database.
+	 * @throws SQLException	if an error occurs while accessing the database.
 	 */
 	public List<Meeting> findCreatedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<>();
@@ -62,14 +62,14 @@ public class MeetingDAO {
 
 
 	/**
-	 * Finds the meetings the given user is invited to.
+	 * Finds the meetings the given user is invited to, excluding those that
+	 * started in the past.
 	 * @param u				the given User.
 	 * @return				a List containing the Meetings they are invited to.
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public List<Meeting> findInvitedMeetings(User u) throws SQLException {
 		List<Meeting> meetings = new ArrayList<>();
-		// DateChecker dc = new DateChecker();
 		
 		String query = "SELECT * FROM meeting M JOIN participation P on M.meetingID = P.meetingID WHERE P.participantID = ? AND addtime(date,time)>now()";
 		try(PreparedStatement pstat = connection.prepareStatement(query)){
@@ -89,16 +89,6 @@ public class MeetingDAO {
 			}
 		}
 		
-		/*
-		//removing the meetings started in the past
-		//check date and time+duration
-		for(Meeting m : meetings) {
-			if(dc.isPastDate(m.getDate()) || (dc.isToday(m.getDate()) && dc.isPastTime(m.getTime())) ) {
-				meetings.remove(m);
-			}
-		}
-		*/
-		
 		return meetings;
 	}
 
@@ -112,7 +102,7 @@ public class MeetingDAO {
 	 * @param maxPart		the maximum number of participants.
 	 * @param creator		the username of the user who creates the meeting.
 	 * @return				the generated key.
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public int createMeeting(String title, Date date, Time time, int duration, int maxPart, String creator) throws SQLException {
 		int creatorID;
@@ -148,7 +138,7 @@ public class MeetingDAO {
 	 * through their IDs.
 	 * @param mID			Meeting's ID.
 	 * @param creator		creator's username.
-	 * @throws SQLException if there is an error while accessing the database.
+	 * @throws SQLException if an error occurs while accessing the database.
 	 */
 	public void sendInvitation(int mID, String creator) throws SQLException {
 		

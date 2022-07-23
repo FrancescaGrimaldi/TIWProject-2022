@@ -93,4 +93,26 @@ public class Meeting {
 		return creatorUsername;
 	}
 	
+	
+	public String toString() {
+		StringBuffer buff = new StringBuffer("Meeting");
+		
+		buff.append(" id: ");
+		buff.append(meetingID);
+		buff.append(" title: ");
+		buff.append(title);
+		buff.append(" date: ");
+		buff.append(date);
+		buff.append(" time: ");
+		buff.append(time);
+		buff.append(" duration: ");
+		buff.append(duration);
+		buff.append(" maxPart: ");
+		buff.append(maxPart);
+		buff.append(" creatorUsername: ");
+		buff.append(creatorUsername);
+		
+		return buff.toString();
+	}
+	
 }

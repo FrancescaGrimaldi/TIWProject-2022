@@ -25,41 +25,49 @@ import it.polimi.tiw.project.beans.User;
 import it.polimi.tiw.project.utilities.ConnectionHandler;
 import it.polimi.tiw.project.utilities.MeetingForm;
 
+/**
+ * This servlet manages the meeting form validation and
+ * the first access to the records page.
+ */
 @WebServlet("/GoToRecordsPage")
 public class GoToRecordsPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection;
 
+	/**
+	 * Class constructor.
+	 */
 	public GoToRecordsPage() {
 		super();
 	}
 
 	
+	/**
+	 * Initializes the connection to the database.
+	 */
 	public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		
 		connection = ConnectionHandler.getConnection(servletContext);
 		
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext); //we are going to retrieve our template files as resources from the servlet context
-		templateResolver.setTemplateMode(TemplateMode.HTML);			//set even though HTML is the default mode
-		templateResolver.setSuffix(".html");							//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+		templateResolver.setTemplateMode(TemplateMode.HTML);												  //set even though HTML is the default mode
+		templateResolver.setSuffix(".html");																  //modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 	}
-	
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-	}
 
 
+	/**
+	 * Checks the validity of the meeting form. If valid, redirects to the records page;
+	 * displays the errors otherwise.
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
 		
+		//redirect to the login if the user is not logged in
 		if (session.isNew() || session.getAttribute("user") == null) {
 			String loginpath = getServletContext().getContextPath() + "/index.html";
 			response.sendRedirect(loginpath);
@@ -70,12 +78,19 @@ public class GoToRecordsPage extends HttpServlet {
 		String title = request.getParameter("title");
 		String startDate = request.getParameter("date");
 		String startTime  = request.getParameter("time");
-		Integer duration = Integer.parseInt(request.getParameter("duration"));
-		Integer maxPart = Integer.parseInt(request.getParameter("maxPart"));
+		Integer duration = 0;
+		Integer maxPart = 0;
 		
-		MeetingForm meetF = new MeetingForm(title,startDate,startTime,duration,maxPart);
+		try {
+			duration = Integer.parseInt(request.getParameter("duration"));
+			maxPart = Integer.parseInt(request.getParameter("maxPart"));
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Request was syntactically incorrect");
+			return;
+		}
 		
-		//the first half is done
+		MeetingForm meetF = new MeetingForm(title, startDate, startTime, duration, maxPart);
+		
 		if (meetF.isValid()) {
 			//redirect to the RecordsPage.html to select participants
 			session.setAttribute("attempt", 1);
@@ -83,7 +98,6 @@ public class GoToRecordsPage extends HttpServlet {
 			
 			UserDAO uDAO = new UserDAO(connection);
 			List<User> rUsers = new ArrayList<>();
-			List<User> sUsers = new ArrayList<>(); //this will be used to contain selected users in a single attempt
 			
 			try {
 				rUsers = uDAO.getRegisteredUsers();
@@ -92,18 +106,18 @@ public class GoToRecordsPage extends HttpServlet {
 				return;
 			}
 			
+			//redirect adding registered users to the parameters
 			String path = "/WEB-INF/RecordsPage.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			
 			ctx.setVariable("rUsers", rUsers);
-			ctx.setVariable("sUsers", sUsers);
 			ctx.setVariable("attempt", 1);
 			
 			templateEngine.process(path, ctx, response.getWriter());
 			
 		} else {
-			//we should redirect to homepage and display the errors
+			//redirect to homepage and display the format errors
 			String path = "/GoToHomepage";
 			
 			request.setAttribute("errors", meetF.getErrors());
@@ -115,12 +129,21 @@ public class GoToRecordsPage extends HttpServlet {
 	}
 
 	
+	/**
+	 * Closes the connection to the database.
+	 */
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 	
 }

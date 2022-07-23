@@ -25,39 +25,49 @@ import it.polimi.tiw.project.beans.Meeting;
 import it.polimi.tiw.project.beans.User;
 import it.polimi.tiw.project.utilities.ConnectionHandler;
 
+/**
+ * This servlet handles the access to the homepage.
+ */
 @WebServlet("/GoToHomepage")
 public class GoToHomepage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	private Connection connection;
 
-	
+	/**
+	 * Class constructor.
+	 */
 	public GoToHomepage() {
 		super();
 	}
 
 	
+	/**
+	 * Initializes the connection to the database.
+	 */
 	public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		
 		connection = ConnectionHandler.getConnection(servletContext);
 		
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext); //we are going to retrieve our template files as resources from the servlet context
-		templateResolver.setTemplateMode(TemplateMode.HTML);			//set even though HTML is the default mode
-		templateResolver.setSuffix(".html");							//modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
+		templateResolver.setTemplateMode(TemplateMode.HTML);												  //set even though HTML is the default mode
+		templateResolver.setSuffix(".html");																  //modifies the template names that we will be passing to the engine for obtaining the real resource names to be used
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 	}
 	
 	
+	/**
+	 * Gets created and invited meetings to display to the specific user.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
 		HttpSession session = request.getSession();
 		
+		//redirect to the login if the user is not logged in
 		if (session.isNew() || session.getAttribute("user") == null) {
+			String loginpath = getServletContext().getContextPath() + "/index.html";
 			response.sendRedirect(loginpath);
 			return;
 		}
@@ -69,8 +79,6 @@ public class GoToHomepage extends HttpServlet {
 		List<Meeting> cMeetings = new ArrayList<>();
 		List<Meeting> iMeetings = new ArrayList<>();
 		
-		
-		//there is a problem for which if there are no created or invited meetings, homepage doesn't display
 		try {
 			cMeetings = mDAO.findCreatedMeetings(u);
 		} catch (SQLException e) {
@@ -88,13 +96,14 @@ public class GoToHomepage extends HttpServlet {
 			return;
 		}
 
-		// Redirect to the Home page and add meetings to the parameters
+		//redirect to the homepage adding the meetings to the parameters
 		String path = "/WEB-INF/Homepage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("CreatedMeetings", cMeetings);
 		ctx.setVariable("InvitedMeetings", iMeetings);
 		
+		//checks if there are also errors to display
 		String errors = (String)request.getAttribute("errors");
 		if(errors!=null && !errors.equals(" ")) {
 			ctx.setVariable("errors", errors);
@@ -102,20 +111,23 @@ public class GoToHomepage extends HttpServlet {
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
 	
 	
+	/**
+	 * Closes the connection to the database.
+	 */
 	public void destroy() {
 		try {
 			ConnectionHandler.closeConnection(connection);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 	
 }

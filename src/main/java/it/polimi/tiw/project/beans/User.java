@@ -91,6 +91,7 @@ public class User {
 		return city;
 	}
 	
+	
 	public String toString() {
 		StringBuffer buff = new StringBuffer("User");
 		

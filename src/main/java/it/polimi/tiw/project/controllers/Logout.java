@@ -9,16 +9,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Manages the logout of the user.
+ */
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
+	/**
+	 * Class constructor.
+	 */
 	public Logout() {
 		super();
 	}
 
 	
+	/**
+	 * Invalidates the session and redirects to the login page.
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -31,6 +39,9 @@ public class Logout extends HttpServlet {
 	}
 
 	
+	/**
+	 * @see #doGet(HttpServletRequest, HttpServletResponse)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
