@@ -1,58 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="background" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="ISO-8859-1">
 	<title>Sign up</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="./css/website.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 <body>
 	<div align="right">
 		<form method="GET" action="index.html">
-			<button type="submit">Go back</button>
+			<button style="margin:10px" class="cancel-button" type="submit">Go back</button>
 		</form>
 	</div>
 
-	<h1>We're glad you want to join us!</h1>
-	<h2>Complete the following form to sign up:</h2>
+	<h1 class="text">We're glad you want to join us!</h1>
+	<h3 style="margin-bottom:40px" class="text">Complete the following form to sign up:</h3>
 
-	<form action="CreateUser" method="POST">
-		<fieldset>
+	<form action="CreateUser" method="POST" class="form">
 			<p>
-				Username: <input type="text" name="username" required maxlength="50" />
+				Username:<input class="newInput" type="text" name="username" required maxlength="50" />
 			</p>
 			<p>
-				Email: <input type="email" name="email" required maxlength="100" />
+				Email:<input class="newInput" type="email" name="email" required maxlength="100" />
 			<p>
-				Password: <input type="password" name="password" required
+				Password:<input class="newInput" type="password" name="password" required
 					maxlength="50" />
 			</p>
 			<p>
-				Confirm password: <input type="password" name="password2" required
+				Confirm password:<input class="newInput" type="password" name="password2" required
 					maxlength="50" />
 			</p>
 			<p>
-				Name: <input type="text" name="name" required maxlength="50" />
+				Name:<input class="newInput" type="text" name="name" required maxlength="50" />
 			</p>
 			<p>
-				Surname: <input type="text" name="surname" required maxlength="50" />
+				Surname:<input class="newInput" type="text" name="surname" required maxlength="50" />
 			</p>
 			<p>
-				Age: <input type="number" name="age" required min="5" max="123" />
+				Age:<input class="newInput" type="number" name="age" required min="5" max="123" />
 			</p>
 			<p>
-				City: <input type="text" name="city" required maxlength="50" />
+				City:<input class="newInput" type="text" name="city" required maxlength="50" />
 			</p>
 
-			<input type="submit" name="Signup">
-		</fieldset>
+			<input class="signUpButton" style="margin:0 50; transform: translate(-50%, 0px)" type="submit" name="Signup">
+
 	</form>
 	
 	<div th:if="${errorMsg!=null}">
-		<p th:text="${errorMsg}"></p>
+		<p class="warning" th:text="${errorMsg}"></p>
 	</div>
 
 	<div th:if="${errors!=null && !errors.equals(' ')}">
-		<p th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
+		<p class="warning" th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
 	</div>
 	
 </body>

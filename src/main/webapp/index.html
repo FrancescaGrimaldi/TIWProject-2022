@@ -1,35 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="background" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-
-<title>Online meetings</title>
+	<meta charset="ISO-8859-1">
+	<title>Online meetings</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="./css/website.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
+
 <body>
-	<h1>ONLINE MEETINGS</h1>
+	<h1 class="text">ONLINE MEETINGS</h1>
 	<div>
-		<h2> Welcome to the Online Meetings app! </h2>
-			<div>
+		<h2 class="text">Welcome to the Online Meetings app!</h2>
+			<div style="margin:10px" class="welcome">
 				<p> You can set date and time and invite your friends or
 					colleagues, or join them accepting their invitations. </p>
-				<p> If you're already a member, log in below, otherwise, sign up
+				<p style="margin:4px"> If you're already a member, log in below, otherwise, sign up
 					and then come back here!</p>
 				<form method="GET" action="SignUp.html">
-					<button type="submit">Sign up</button>
+					<button class="signUpButton" type="submit">Sign up</button>
 				</form>
 			</div>
 	</div>
 
-	<h2>Login</h2>
+	<h2 style="margin:30px" class="text">Login</h2>
 	<form action="CheckLogin" method="POST">
-		Username: <input type="text" name="username" required> <br>
-		Password: <input type="password" name="password" required><br>
+		<input class="input" placeholder="Username" style="margin-bottom:40px; width:20%" type="text" name="username" required> <br>
+		<input class="input" placeholder="Password" style="margin-bottom:20px; width:20%" type="password" name="password" required><br>
 
 		<div th:if="${errorMsg!=null}">
-			<p th:text="${errorMsg}"></p>
+			<p class="warning" th:text="${errorMsg}"></p>
 		</div>
 
-		<input type="submit" value="login">
+		<input class="loginButton" type="submit" value="login">
 	</form>
 </body>
 </html>

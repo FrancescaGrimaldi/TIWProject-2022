@@ -1,22 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="background" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Home</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+	<meta charset="ISO-8859-1">
+	<title>Home</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="./css/website.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 <body>
 	<div align="right">
 		<form method="POST" action="Logout">
-			<button type="submit">Logout</button>
+			<button class="cancel-button" style="margin: 10px" type="submit">Logout</button>
 		</form>
 	</div>
-	<h1>Welcome to your home page!</h1>
-	<p
-		th:text=" 'Nice to see you again, ' + ${session.user.name} + ' ' + ${session.user.surname}"></p>
-	<h2>Meetings created:</h2>
+	
+	<h1 class="text">Welcome to your home page!</h1>
+	<p class="welcome" th:text="'Nice to see you again, ' + ${session.user.name} + ' ' + ${session.user.surname}"></p>
+	
+	<hr style="margin: 30px 40px 20px"></hr>
+	
+	<h2 class="text">Meetings created:</h2>
 	<div th:if="${CreatedMeetings.size()>0}">
 		<table>
 			<thead>
@@ -39,11 +43,12 @@
 			</tbody>
 		</table>
 	</div>
-	<div th:if="${CreatedMeetings.size() == 0}">You haven't created
-		any meetings!</div>
+	<div style="text-align: center; margin-bottom: 20px" class="text"
+		th:if="${CreatedMeetings.size() == 0}">You haven't created any meetings!</div>
 		
+	<hr style="margin: 40px"></hr>
 		
-	<h2>Meetings you are invited to:</h2>
+	<h2 class="text">Meetings you are invited to:</h2>
 	<div th:if="${InvitedMeetings.size()>0}">
 		<table>
 			<thead>
@@ -68,43 +73,44 @@
 			</tbody>
 		</table>
 	</div>
-	<div th:if="${InvitedMeetings.size()==0}">You don't have any
-		meeting invitation.</div>
+	<div style="text-align: center; margin-bottom: 20px" class="text" 
+		th:if="${InvitedMeetings.size()==0}">You don't have any meeting invitation.</div>
 	
+	<hr style="margin: 40px"></hr>
 	
-	<div>
+	<div class="text">
 		<h2>Complete the form to create a meeting</h2>
 		<form action="#" th:action="@{/GoToRecordsPage}" method="POST">
-			<fieldset>
 				<p>
-					Title: <input type="text" name="title" required />
+					Title: <input class="input" type="text" name="title" required />
 				</p>
 				<p>
-					Date: <input type="date" name="date"
+					Date: <input type="date" name="date" class="input"
 						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
 						placeholder="yyyy-MM-dd" required />
 				</p>
 				<p>
-					Time: <input type="time" name="time" placeholder="hh:mm" required />
+					Time: <input class="input" type="time" name="time" placeholder="hh:mm" required />
 				</p>
 				<p>
-					Duration (in minutes): <input type="number" name="duration" min=1 max=720
+					Duration <i>(in minutes)</i> : <input class="input" type="number" name="duration" min=1 max=720
 						required />
 				</p>
 				<p>
-					Maximum number of participants: <input type="number" name="maxPart"
+					Maximum number of participants: <input class="input" type="number" name="maxPart"
 						min=2 max=50 required />
 				</p>
 
-				<input type="submit" name="Create Meeting">
-			</fieldset>
+				<button class="button" type="submit" name="createMeetingButton">Create Meeting</button>
 		</form>
 		
 		<div th:if="${errors!=null && !errors.equals(' ')}">
-			<p th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
+			<p class="warning" th:text=" 'You made some mistakes while filling out this form before. Remember:' + ${errors} "></p>
 		</div>
 		
 	</div>
+	
+	<hr style="margin: 20px 40px 40px"></hr>
 	
 </body>
 </html>

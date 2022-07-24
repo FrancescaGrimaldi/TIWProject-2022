@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html class="background" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Records Page</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+	<meta charset="ISO-8859-1">
+	<title>Records Page</title>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<link rel="stylesheet" type="text/css" media="all" href="./css/website.css">
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<h2>Please select the users you would like to invite to the meeting</h2>
-	<p
-		th:text=" 'This is your attempt number ' + ${attempt} "></p>
+	<h2 class="text">Please select the users you would like to invite to the meeting</h2>
+	<p class="text" th:text=" 'This is your attempt number ' + ${attempt} "></p>
 	<div th:if="${attempt}==3">
-		<p th:text=" 'Be careful because this is the last one! ' "></p>
+		<p class="text"  th:text=" 'Be careful because this is the last one! ' "></p>
 	</div>
 	
 	<div th:if="${rUsers.size()>0}">
@@ -20,7 +20,7 @@
 		 <table>
 		 	<thead>
 			   <tr>
-			   		<th>Invited	</th>
+			   		<th>Invited</th>
 			   		<th>Username</th>
 			   		<th>Email</th>
 			   		<th>Name</th>
@@ -28,8 +28,7 @@
 			    </tr>
 			</thead>
 			<tbody>
-				<tr th:each="u: ${rUsers}">
-					
+				<tr th:each="u: ${rUsers}">					
 					<td><input type="checkbox" th:value="${u.username}" th:name="id" th:checked="${sUsers!=null && sUsers.contains(u.username)}"/></td>
 					<td th:text="${u.username}"></td>
 					<td th:text="${u.email}"></td>
@@ -40,10 +39,10 @@
 		 </table>
 		
 		<div th:if="${toDeselect}!=null">
-			<p th:text=" 'You need to deselect ' + ${toDeselect} + ' user(s)' "></p>
+			<p class="warning" th:text=" 'You need to deselect ' + ${toDeselect} + ' user(s)' "></p>
 		</div>
 		
-		<input type="submit" name="Invite people"/>
+		<button class="button submit-button" type="submit">Invite people</button>
 		</form>
 	</div>
 	
