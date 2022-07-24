@@ -80,7 +80,7 @@ public class InviteToMeeting extends HttpServlet {
 			MeetingForm meetF = (MeetingForm)session.getAttribute("meetF");
 			int maxPart = meetF.getMaxPart();
 			
-			if(sUsernames.length <= maxPart) {
+			if(sUsernames!=null && sUsernames.length <= maxPart) {
 				//information is correct (both for the meeting and the participants) -> the meeting can be created and people can be invited to it
 				MeetingDAO mDAO = new MeetingDAO(connection);
 				
@@ -102,7 +102,7 @@ public class InviteToMeeting extends HttpServlet {
 					return;
 				}
 				
-			} else if (sUsernames.length > maxPart && (int)session.getAttribute("attempt")==3) {
+			} else if ((sUsernames==null || sUsernames.length>maxPart) && (int)session.getAttribute("attempt")==3) {
 				//the user made three attempts and they always selected an invalid number of participants
 				session.removeAttribute("meetF");
 				session.removeAttribute("attempt");
@@ -127,11 +127,14 @@ public class InviteToMeeting extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-				for(String s : sUsernames) {
-					sUsers.add(s);
-				}
+				int toDeselect = 0;
 				
-				int toDeselect = sUsernames.length-maxPart;
+				if (sUsernames!=null) {
+					for(String s : sUsernames) {
+						sUsers.add(s);
+					}
+					toDeselect = sUsernames.length-maxPart;
+				}
 				
 				String path = "/WEB-INF/RecordsPage.html";
 				ServletContext servletContext = getServletContext();

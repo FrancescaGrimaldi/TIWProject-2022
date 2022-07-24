@@ -87,7 +87,7 @@ tr:hover {
 }
 
 input[type='checkbox'] {
-	margin-top: 17px;
+	margin-top: 13px;
 	transform: scale(1.7);
 }
 
@@ -153,46 +153,9 @@ input[type='checkbox'] {
 	background-color: #2E2924;
 }
 
-.modal-container {
-	background-color: rgba(0, 0, 0, 0.7);
-	align-items: center;
-	justify-content: center;
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	display: flex;
-	opacity: 0;
-	pointer-events: none;
-	transition: 200ms ease-in-out;
-}
-
-.modal-container.show {
-	opacity: 1;
-	pointer-events: auto;
-}
-
-.modal {
-	position: fixed;
-	background-color: #E8E3E8;
-	box-shadow: 3px 3px 5px 5px #474747;
-	padding: 20px 30px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	transition: 200ms ease-in-out;
-	width: 60%;
-	max-width: 80%;
-	max-height: 85%;
-	min-height: min-content;
-	text-align: center;
-    overflow-y: auto;
-}
-
 .sticky {
 	background-color: #E8E3E8;
-	transform: translate(0%, 15%);
+	text-align: center;
 	position: sticky;
  	bottom: 0%;
 }

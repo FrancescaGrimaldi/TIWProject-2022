@@ -24,7 +24,7 @@
 	</div>
 
 	<h2 style="margin:30px" class="text">Login</h2>
-	<form action="CheckLogin" method="POST">
+	<form action="CheckLogin" method="POST" class="text">
 		<input class="input" placeholder="Username" style="margin-bottom:40px; width:20%" type="text" name="username" required> <br>
 		<input class="input" placeholder="Password" style="margin-bottom:20px; width:20%" type="password" name="password" required><br>
 
@@ -32,7 +32,7 @@
 			<p class="warning" th:text="${errorMsg}"></p>
 		</div>
 
-		<input class="loginButton" type="submit" value="login">
+		<button class="loginButton" type="submit">Login</button>
 	</form>
 </body>
 </html>
