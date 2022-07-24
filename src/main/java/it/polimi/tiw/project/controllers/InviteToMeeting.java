@@ -60,7 +60,7 @@ public class InviteToMeeting extends HttpServlet {
 
 
 	/**
-	 * Gets the number and usernames of the users selected as participants for the meeting about to be
+	 * Gets the numbers and usernames of the users selected as participants for the meeting about to be
 	 * created, checks the validity of the information and creates the meeting as soon as the information 
 	 * is complete and correct (in accordance with the number of attempts the user has for making this choice).
 	 */

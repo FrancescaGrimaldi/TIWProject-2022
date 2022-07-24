@@ -136,15 +136,15 @@ public class MeetingDAO {
 	 * Adds a new row to the participation table that pairs a meeting and a user
 	 * through their IDs.
 	 * @param mID			Meeting's ID.
-	 * @param creator		creator's username.
+	 * @param participant	participant's username.
 	 * @throws SQLException if an error occurs while accessing the database.
 	 */
-	public void sendInvitation(int mID, String creator) throws SQLException {
+	public void sendInvitation(int mID, String participant) throws SQLException {
 		
 		String query = "INSERT into participation (meetingID, participantID) VALUES(?, ?)";
 		
 		UserDAO uDAO = new UserDAO(connection);
-		int uID = uDAO.getIDByNick(creator);
+		int uID = uDAO.getIDByNick(participant);
 		
 		try (PreparedStatement pstat = connection.prepareStatement(query)){
 			pstat.setInt(1, mID);

@@ -62,7 +62,7 @@ public class UserForm {
 		
 		if (email == null || email.equals("")) {
 			this.emailError = "Email field cannot be empty.";
-		} else if ( !(email.matches("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")) ) {
+		} else if ( !(email.matches("[a-z0-9._]+@[a-z0-9.]+\\.[a-z]{2,4}$")) ) {
 			this.emailError = "Email format is example@mail.com.";
 		} else {
 			this.emailError = null;
@@ -136,7 +136,7 @@ public class UserForm {
 	public void setSurname(String surname) {
 		this.surname = surname;
 		
-		if(surname == null || surname.equals("") || name.isBlank()) {
+		if(surname == null || surname.equals("") || surname.isBlank()) {
 			this.surnameError = "Surname field cannot be empty (it can't only contain spaces).";
 		} else if( !(surname.matches("[a-zA-Z ]+")) ) {
 			this.surnameError = "Surname field can only contain letters.";
@@ -169,7 +169,7 @@ public class UserForm {
 	public void setCity(String city) {
 		this.city = city;
 		
-		if(city == null || city.equals("")) {
+		if(city == null || city.equals("") || city.isBlank()) {
 			this.cityError = "City field cannot be empty (it can't only contain spaces).";
 		} else if ( !(city.matches("[a-zA-Z ]+")) ) {
 			this.cityError = "City field can only contain letters.";

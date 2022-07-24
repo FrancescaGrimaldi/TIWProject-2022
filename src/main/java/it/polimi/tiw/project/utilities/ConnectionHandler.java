@@ -13,7 +13,7 @@ public class ConnectionHandler {
 
     /**
      * Returns the connection to the database.
-     * @param context 				 the ServletContext} of the Servlet.
+     * @param context 				 the ServletContext of the Servlet.
      * @return 						 the Connection to the database.
      * @throws UnavailableException  if the connection cannot be initialized.
      */

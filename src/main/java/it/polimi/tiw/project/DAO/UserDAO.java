@@ -171,7 +171,6 @@ public class UserDAO {
 					return true;
 				} else {
 					result.next();
-					//maybe lines 177 and 178 are useless
 					User u = new User();
 					u.setID(result.getInt("userID"));
 					
