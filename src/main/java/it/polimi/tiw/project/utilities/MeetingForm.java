@@ -131,8 +131,8 @@ public class MeetingForm {
 	public void setDuration(int duration) {
 		this.duration = duration;
 		
-		if (duration == 0) {
-			this.durationError = "Duration can't be zero minutes.";
+		if (duration < 1) {
+			this.durationError = "Meetings can't last less than 1 minute.";
 		} else if (duration > 720) {
 			this.durationError = "Duration can't be more than 12 hours.";
 		} else {
@@ -143,14 +143,14 @@ public class MeetingForm {
 
 	/**
 	 * Sets the maximum number of participants for the meeting checking that
-	 * the number inserted is >0 and <=50.
+	 * the number inserted is >1 and <=50.
 	 * @param maxPart	the number inserted.
 	 */
 	public void setMaxPart(int maxPart) {
 		this.maxPart = maxPart;
 		
-		if (maxPart == 0) {
-			this.maxPartError = "Participants can't be zero.";
+		if (maxPart < 2) {
+			this.maxPartError = "Participants can't be less than 2.";
 		} else if (maxPart > 50) {
 			this.maxPartError = "You can't invite more than 50 people.";
 		} else {
