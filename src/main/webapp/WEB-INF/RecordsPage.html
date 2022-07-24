@@ -9,10 +9,12 @@
 </head>
 
 <body>
-	<h2 style="margin:40px" class="text">Please select the users you would like to invite to the meeting</h2>
-	<p style="margin:20px"class="text" th:text=" 'This is your attempt number ' + ${attempt} "></p>
-	<div th:if="${attempt}==3">
-		<p class="text" style="margin:10px" th:text=" 'Be careful because this is the last one! ' "></p>
+	<div class="stickyTop">
+		<h2 style="margin:40px" class="text">Please select the users you would like to invite to the meeting</h2>
+		<p style="margin:20px"class="text" th:text=" 'This is your attempt number ' + ${attempt} "></p>
+		<div th:if="${attempt}==3">
+			<p class="text" style="margin:10px" th:text=" 'Be careful because this is the last one! ' "></p>
+		</div>
 	</div>
 	
 	<div th:if="${rUsers.size()>0}">
@@ -39,12 +41,13 @@
 		 </table>
 		
 		
-		<div class="sticky">
+		<div class="stickyBottom">
 			<button class="button submit-button" type="submit">Invite people</button>
-		</div>
+			
+			<div th:if="${toDeselect!=null && toDeselect!=0}">
+				<p class="warning" th:text=" 'You need to deselect ' + ${toDeselect} + ' user(s)' "></p>
+			</div>
 		
-		<div th:if="${toDeselect!=null && toDeselect!=0}">
-			<p class="warning" th:text=" 'You need to deselect ' + ${toDeselect} + ' user(s)' "></p>
 		</div>
 		
 		</form>
