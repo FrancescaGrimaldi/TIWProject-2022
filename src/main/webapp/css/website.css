@@ -42,7 +42,7 @@ th, td {
 	padding: 13px;
 }
 
-tr:nth-child(even) {
+tr:nth-child(odd) {
   background-color: #F2F2F2;
 }
 
